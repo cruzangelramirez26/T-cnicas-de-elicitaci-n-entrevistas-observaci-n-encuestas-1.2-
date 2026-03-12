@@ -3,523 +3,481 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Guía de Estudio — Sesión 2: Técnicas de Elicitación</title>
+  <title>Guía Completa — Sesión 2: Técnicas de Obtención, Análisis, Priorización y Validación (1.2)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:#0F172A;font-family:'Crimson Pro',Georgia,serif;color:#E2E8F0}
+    body{background:#0B0F1A;font-family:'Crimson Pro',Georgia,serif;color:#CBD5E1;-webkit-font-smoothing:antialiased}
     button{cursor:pointer;border:none;font-family:'Crimson Pro',Georgia,serif}
-    ::selection{background:#3B82F6;color:#fff}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
-    .fade-up{animation:fadeUp 0.4s ease-out both}
+    ::selection{background:#2563EB;color:#fff}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{animation:fadeUp 0.35s ease-out both}
     .mono{font-family:'JetBrains Mono',monospace}
+    .ref{font-size:11px;color:#64748B;font-style:italic;margin-top:4px;line-height:1.5}
+    .ref strong{color:#94A3B8;font-style:normal}
+    a{color:#60A5FA;text-decoration:none} a:hover{text-decoration:underline}
+    ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#0B0F1A} ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
-  const {useState,useEffect} = React;
+  const {useState} = React;
 
-  const techniques = [
+  const sections = [
     {
-      id:"entrevistas",
-      name:"Entrevistas",
-      icon:"🎙️",
+      id:"obtencion",
+      title:"Técnicas de Obtención (Elicitación)",
+      subtitle:"Cómo descubrir qué necesita el usuario",
+      icon:"🔍",
       color:"#3B82F6",
-      definition:"Conversación estructurada o semi-estructurada entre el analista y los stakeholders para descubrir requisitos, necesidades y expectativas del sistema.",
-      types:[
-        {name:"Estructurada", desc:"Preguntas predefinidas, orden fijo. Ideal para recopilar datos cuantitativos y comparables entre stakeholders."},
-        {name:"Semi-estructurada", desc:"Guión base flexible, permite explorar temas emergentes. La más usada en ingeniería de requisitos."},
-        {name:"No estructurada (abierta)", desc:"Sin guión fijo, conversación libre. Útil en etapas iniciales de exploración del dominio."},
-      ],
-      advantages:["Permite profundizar en respuestas y aclarar dudas en tiempo real","Se adapta al contexto del entrevistado","Captura requisitos implícitos a través del lenguaje no verbal","Genera confianza y rapport con los stakeholders"],
-      disadvantages:["Consume mucho tiempo (preparación + ejecución + análisis)","Depende de la habilidad del entrevistador","Puede generar información sesgada si las preguntas no son neutrales","Difícil de escalar a muchos stakeholders"],
-      whenToUse:"Cuando necesitas entender a profundidad las necesidades de stakeholders clave, especialmente en etapas tempranas del proyecto.",
-      egelTip:"El EGEL pregunta frecuentemente la diferencia entre entrevistas estructuradas vs semi-estructuradas. Recuerda: semi-estructurada = la más común en requisitos.",
-      keyTerms:["Stakeholder","Rapport","Preguntas abiertas vs cerradas","Protocolo de entrevista"],
+      intro:"La elicitación es el proceso de descubrir los requisitos del sistema a través de la comunicación con los stakeholders y el estudio del dominio. Sommerville (2011, Cap. 4) señala que es la etapa más crítica porque los errores aquí se propagan a todo el proyecto. Pressman (2010, Cap. 5) la define como la actividad de «comunicación» del proceso de ingeniería de requisitos.",
+      introRef:"Sommerville (2011) Cap. 4, pp. 82-90 · Pressman (2010) Cap. 5, pp. 106-115",
+      techniques:[
+        {
+          name:"Entrevistas",
+          icon:"🎙️",
+          content:"**Definición:** Conversación planificada entre el analista y uno o más stakeholders para obtener información sobre necesidades, expectativas y restricciones del sistema.\n\n**Tipos según Sommerville (2011, Cap. 4.5.1):**\n• **Estructurada:** Preguntas predefinidas en orden fijo. Todas las entrevistas siguen el mismo guión. Produce datos comparables. Útil cuando ya tienes hipótesis que validar.\n• **Semi-estructurada:** Guión base con preguntas abiertas y cerradas, pero el entrevistador puede desviarse para explorar temas emergentes. Es la MÁS USADA en ingeniería de requisitos según Sommerville y Pressman.\n• **No estructurada (abierta):** Sin guión predefinido. Conversación libre guiada por temas generales. Útil al inicio cuando aún no conoces el dominio.\n\n**Tipos de preguntas según Wiegers & Beatty (2013, Cap. 7):**\n• **De contexto:** «¿Cuál es su rol en el proceso actual?»\n• **De flujo:** «¿Qué pasa después de aprobar la solicitud?»\n• **De problema:** «¿Qué es lo más frustrante del sistema actual?»\n• **Abiertas:** Generan respuestas amplias — «Descríbame su día típico»\n• **Cerradas:** Respuestas concretas — «¿Cuántas veces al día usa el módulo X?»\n\n**Buenas prácticas (Pressman, 2010, Cap. 5):**\n• Preparar la entrevista con investigación previa del dominio\n• Iniciar con preguntas de contexto antes de las detalladas\n• Evitar preguntas tendenciosas («¿No cree que sería mejor si...?»)\n• Grabar o tomar notas con consentimiento\n• Enviar resumen al entrevistado para validación posterior\n\n**Ventajas:** Profundidad, flexibilidad, captura lenguaje no verbal, genera rapport.\n**Desventajas:** No escala (uno a uno), depende del analista, consume tiempo, posible sesgo.",
+          ref:"Sommerville (2011) Cap. 4.5.1 · Pressman (2010) Cap. 5.3 · Wiegers & Beatty (2013) Cap. 7"
+        },
+        {
+          name:"Observación / Etnografía",
+          icon:"👁️",
+          content:"**Definición:** El analista observa directamente cómo los usuarios realizan sus tareas en su ambiente real de trabajo. Sommerville (2011, Cap. 4.6) dedica una sección completa a la etnografía como técnica de elicitación.\n\n**Tipos:**\n• **Pasiva (directa):** El analista solo observa sin intervenir. Registra actividades, tiempos, secuencias y excepciones.\n• **Activa (participante):** El analista se involucra en las tareas. Comprende el contexto desde adentro.\n• **Etnografía (inmersión):** Según Sommerville (2011, Cap. 4.6.1), es una inmersión prolongada en el entorno de trabajo. Descubre requisitos sociales, culturales y organizacionales que otras técnicas no capturan.\n\n**Concepto clave — Requisitos tácitos:**\nSommerville enfatiza que la observación es la ÚNICA técnica eficaz para descubrir requisitos tácitos: conocimiento que los usuarios tienen pero no pueden verbalizar porque lo dan por sentado. Ejemplo: un empleado que siempre revisa un post-it antes de aprobar algo — ese «paso» no aparece en ningún manual.\n\n**Concepto clave — Efecto Hawthorne:**\nLas personas modifican su comportamiento cuando saben que están siendo observadas (Pressman, 2010). El analista puede estar viendo un flujo «artificial» en lugar del real.\n\n**Cuándo usar según Sommerville:** Cuando los requisitos están ligados al contexto organizacional; cuando los usuarios no pueden explicar sus procesos; para sistemas que reemplazan prácticas de trabajo existentes.\n\n**Ventajas:** Captura lo tácito, ve el contexto real, no depende de la articulación verbal del usuario.\n**Desventajas:** Efecto Hawthorne, consume mucho tiempo, no escala, puede ser invasiva.",
+          ref:"Sommerville (2011) Cap. 4.6 · Pressman (2010) Cap. 5.3"
+        },
+        {
+          name:"Cuestionarios / Encuestas",
+          icon:"📋",
+          content:"**Definición:** Instrumento escrito con preguntas estandarizadas que se distribuye a un grupo amplio de stakeholders. Pressman (2010, Cap. 5) los menciona como técnica complementaria para validar hallazgos de entrevistas a gran escala.\n\n**Tipos de preguntas:**\n• **Cerradas:** Opciones predefinidas:\n  — Sí/No (dicotómicas)\n  — Opción múltiple\n  — Escala Likert (1-5 o 1-7, de «totalmente en desacuerdo» a «totalmente de acuerdo»)\n  — Ranking / ordenamiento\n• **Abiertas:** El encuestado escribe libremente. Más ricas pero más difíciles de analizar.\n• **Mixtas:** Combinan ambas. Las más efectivas para ingeniería de requisitos.\n\n**Cuándo usar:** Muchos stakeholders (>20), distribuidos geográficamente, necesitas datos cuantitativos para priorizar, o quieres validar requisitos descubiertos con otras técnicas.\n\n**Cuándo NO usar:** Si necesitas profundizar o explorar un dominio desconocido — no permiten follow-up.\n\n**Ventajas:** Escala a cientos de usuarios, datos cuantitativos, bajo costo, anonimato favorece honestidad.\n**Desventajas:** No hay profundidad, tasa de respuesta puede ser baja (<30%), preguntas mal diseñadas = datos inútiles, no captura requisitos implícitos.",
+          ref:"Pressman (2010) Cap. 5 · Wiegers & Beatty (2013) Cap. 7 · Rohrer (2014) – NNGroup"
+        },
+        {
+          name:"Talleres JAD / Brainstorming",
+          icon:"🏛️",
+          content:"**Definición:** Reuniones grupales facilitadas donde múltiples stakeholders colaboran para identificar, negociar y priorizar requisitos. Sommerville (2011, Cap. 4.5.2) y Pressman (2010, Cap. 5) los identifican como técnica para resolver conflictos.\n\n**JAD (Joint Application Development) — Wiegers & Beatty (2013, Cap. 7):**\nTiene roles específicos:\n• **Facilitador:** Guía la sesión, mantiene el enfoque, resuelve conflictos. IMPORTANTE: el facilitador NO da opiniones sobre requisitos ni toma decisiones técnicas.\n• **Escribano (Scribe):** Documenta todo en tiempo real. NO es el facilitador.\n• **Participantes:** Stakeholders (usuarios, gerentes, desarrolladores) que aportan requisitos.\n• **Observadores:** Asisten pero no participan activamente.\n\n**Brainstorming:**\nGeneración libre de ideas. Regla fundamental: durante la generación NO se critican ni evalúan ideas. La evaluación viene después en fase separada. Objetivo: cantidad sobre calidad inicial.\n\n**Focus Group:**\nGrupo representativo (6-10 personas) discuten temas específicos guiados por un moderador. Útil para entender percepciones y preferencias.\n\n**Ventajas:** Múltiples perspectivas simultáneas, resuelve conflictos en tiempo real, genera consenso.\n**Desventajas:** Logística compleja, personalidades dominantes sesgan resultados, requiere facilitador experimentado, costoso en horas-persona.",
+          ref:"Sommerville (2011) Cap. 4.5.2 · Pressman (2010) Cap. 5.3 · Wiegers & Beatty (2013) Cap. 7"
+        },
+        {
+          name:"Prototipado",
+          icon:"🖥️",
+          content:"**Definición:** Versión preliminar del sistema para que los usuarios interactúen y descubran o refinen requisitos. Sommerville (2011, Cap. 2.3) y Pressman (2010, Cap. 5) lo consideran esencial cuando los requisitos son ambiguos.\n\n**Por fidelidad (Pressman, 2010):**\n• **Baja fidelidad (Lo-Fi):** Bocetos en papel, wireframes, storyboards. Rápidos y baratos. Se enfocan en flujo y funcionalidad, NO en apariencia visual.\n• **Alta fidelidad (Hi-Fi):** Prototipos digitales interactivos que simulan la experiencia real. Más costosos pero mejores para validación detallada.\n\n**Por destino (Sommerville, 2011, Cap. 2.3.1):**\n• **Desechable (throwaway):** Se construye SOLO para explorar y validar requisitos. Se DESCARTA completamente. El sistema final se construye desde cero.\n• **Evolutivo:** Se refina iterativamente y evoluciona hasta convertirse en el sistema final. Se usa en metodologías ágiles.\n\n**¿Por qué funciona?** Wiegers & Beatty (2013) explican que los usuarios tienen dificultad para imaginar un sistema abstracto. Al interactuar con un prototipo descubren lo que realmente necesitan.\n\n**Riesgo principal (Sommerville):** El usuario puede creer que el prototipo ya es el sistema terminado y presionar para liberarlo sin la ingeniería adecuada.\n\n**Ventajas:** Reduce ambigüedad, descubre requisitos ocultos, valida usabilidad tempranamente.\n**Desventajas:** Hi-Fi es costoso, expectativas falsas, puede desviar enfoque a diseño visual.",
+          ref:"Sommerville (2011) Cap. 2.3 · Pressman (2010) Cap. 5 · Wiegers & Beatty (2013) Cap. 15"
+        },
+        {
+          name:"Análisis de Documentos",
+          icon:"📑",
+          content:"**Definición:** Revisión sistemática de documentación existente para extraer requisitos del dominio. Pressman (2010, Cap. 5) lo recomienda como PRIMERA actividad al iniciar un proyecto.\n\n**Qué documentos revisar:**\n• Manuales de procedimientos y políticas internas\n• Formularios en uso (físicos y digitales)\n• Reportes que genera el sistema actual\n• Documentación técnica del sistema existente\n• Normativas y regulaciones aplicables\n• Organigramas y descripción de roles\n• Actas de reuniones previas sobre el proyecto\n\n**Cuándo usar:** Al INICIO del proyecto como primera aproximación al dominio. También para reemplazar un sistema existente (ingeniería inversa de documentación).\n\n**Técnica complementaria — Arqueología de sistemas (Wiegers):** Examinar código, base de datos y configuraciones del sistema actual para descubrir reglas de negocio implícitas que nadie documentó.\n\n**Ventajas:** No requiere tiempo de stakeholders, disponible desde el día uno, proporciona vocabulario del dominio, identifica restricciones legales.\n**Desventajas:** Documentación puede estar desactualizada, no captura requisitos futuros, no refleja prácticas reales.",
+          ref:"Pressman (2010) Cap. 5 · Wiegers & Beatty (2013) Cap. 8 · SWEBOK v3.0 Cap. 1.4"
+        },
+        {
+          name:"Escenarios y Casos de Uso",
+          icon:"📐",
+          content:"**Definición:** Según Sommerville (2011, Cap. 4.5.3), los escenarios y casos de uso describen la interacción entre el usuario y el sistema para lograr un objetivo específico.\n\n**Escenarios (Sommerville, 2011):**\nDescripciones narrativas de cómo se usa el sistema en una situación concreta. Incluyen:\n• Estado inicial del sistema\n• Flujo normal de eventos\n• Qué puede salir mal (excepciones)\n• Estado final\nSirven como punto de partida para descubrir requisitos: «cuénteme paso a paso qué hace cuando necesita aprobar un pedido».\n\n**Casos de uso (Pressman, 2010, Cap. 6):**\nFormalizan los escenarios:\n• **Actor:** Quien interactúa con el sistema (persona o sistema externo)\n• **Precondiciones:** Qué debe ser verdad antes de iniciar\n• **Flujo principal (happy path):** Secuencia normal de pasos\n• **Flujos alternativos:** Variaciones del flujo principal\n• **Flujos de excepción:** Errores o situaciones anómalas\n• **Postcondiciones:** Estado del sistema al terminar\n\n**PARA EL EGEL:** Aunque los casos de uso se usan para documentar requisitos (subárea 1.3), en 1.2 se usan como TÉCNICA DE OBTENCIÓN: al escribirlos con el usuario, se descubren requisitos nuevos que no habían mencionado.",
+          ref:"Sommerville (2011) Cap. 4.5.3 · Pressman (2010) Cap. 6 · Wong (2017)"
+        },
+      ]
     },
     {
-      id:"observacion",
-      name:"Observación",
-      icon:"👁️",
+      id:"analisis",
+      title:"Técnicas de Análisis",
+      subtitle:"Cómo organizar y entender lo descubierto",
+      icon:"🔬",
       color:"#8B5CF6",
-      definition:"El analista observa directamente cómo los usuarios realizan sus tareas en su entorno real de trabajo, sin intervenir (pasiva) o participando (activa/etnográfica).",
-      types:[
-        {name:"Pasiva (directa)", desc:"El analista solo observa sin interactuar. Captura el flujo real de trabajo sin alterarlo."},
-        {name:"Activa (participante)", desc:"El analista se involucra en las actividades. Permite entender el contexto desde adentro."},
-        {name:"Etnográfica", desc:"Inmersión prolongada en el ambiente. Descubre requisitos culturales y sociales profundos."},
-      ],
-      advantages:["Descubre requisitos tácitos que los usuarios no verbalizan","Captura el contexto real de uso del sistema","Identifica problemas y workarounds que el usuario da por sentado","No depende de la capacidad de articulación del usuario"],
-      disadvantages:["El observador puede alterar el comportamiento (efecto Hawthorne)","Requiere mucho tiempo de inmersión","Puede ser intrusiva para los usuarios","Difícil documentar todo lo observado en tiempo real"],
-      whenToUse:"Cuando los usuarios no pueden explicar bien sus procesos, cuando hay procesos complejos o cuando sospechas que hay requisitos ocultos.",
-      egelTip:"Clave: la observación captura requisitos TÁCITOS (no expresados). El efecto Hawthorne es un concepto frecuente en el examen.",
-      keyTerms:["Requisitos tácitos","Efecto Hawthorne","Etnografía","Workaround","Conocimiento tácito"],
+      intro:"Una vez obtenidos los requisitos, hay que analizarlos para detectar conflictos, redundancias, ambigüedades e incompletitudes. Sommerville (2011, Cap. 4.5) describe el análisis como clasificación, modelado conceptual y negociación. El SWEBOK v3.0 (IEEE, Cap. 1.4) lo define como el proceso de descomponer y examinar los requisitos para asegurar que sean correctos, completos y consistentes.",
+      introRef:"Sommerville (2011) Cap. 4.5 · SWEBOK v3.0 Cap. 1.4 · Pressman (2010) Cap. 6",
+      techniques:[
+        {
+          name:"Clasificación de Requisitos",
+          icon:"🗂️",
+          content:"**Según Sommerville (2011, Cap. 4.1) y el SWEBOK v3.0:**\n\n**Por naturaleza:**\n• **Funcionales:** Qué debe HACER el sistema. Comportamiento, entradas, salidas, procesamiento. Ej: «El sistema debe permitir buscar productos por nombre».\n• **No funcionales:** Cómo debe SER el sistema. Restricciones de calidad:\n  — **De producto:** rendimiento, usabilidad, fiabilidad, portabilidad\n  — **Organizacionales:** estándares, lenguajes requeridos, metodología\n  — **Externos:** regulaciones legales, interoperabilidad\n\n**Por nivel (Wiegers & Beatty, 2013):**\n• **De negocio:** Objetivos de alto nivel. Ej: «Reducir tiempo de procesamiento en 40%».\n• **De usuario:** Lo que el usuario necesita hacer. Ej: «Generar cotizaciones en menos de 5 minutos».\n• **Del sistema:** Comportamiento detallado del software.\n\n**TRUCO PARA EL EGEL:** Si el requisito dice qué HACE el sistema = funcional. Si dice qué tan bien, rápido, seguro = no funcional.",
+          ref:"Sommerville (2011) Cap. 4.1 · SWEBOK v3.0 Cap. 1.3 · Wiegers & Beatty (2013) Cap. 1"
+        },
+        {
+          name:"Modelado Conceptual",
+          icon:"📊",
+          content:"**El modelado conceptual según Pressman (2010, Cap. 6) crea representaciones abstractas del dominio del problema.**\n\n**Técnicas:**\n• **Diagrama de contexto:** Sistema como caja negra + entidades externas. Define los LÍMITES del sistema.\n• **Modelo de dominio:** Diagrama de clases simplificado con entidades del negocio y sus relaciones. NO es diseño — es entender el problema.\n• **Diagrama de actividad (UML):** Modela flujos de trabajo. Útil para proceso actual (AS-IS) y propuesto (TO-BE).\n• **Diagrama de estados:** Para objetos que cambian de estado (ej: pedido → creado → aprobado → enviado → entregado).\n\n**Propósito (Sommerville, 2011):** No es diseñar la solución sino ENTENDER EL PROBLEMA. Los modelos descubren ambigüedades e inconsistencias.\n\n**PARA EL EGEL:** Contexto = límites. Actividad = flujos de proceso. Estados = ciclo de vida. Clases de dominio = estructura del problema.",
+          ref:"Pressman (2010) Cap. 6 · Sommerville (2011) Cap. 5 · Wong (2017)"
+        },
+        {
+          name:"Negociación de Requisitos",
+          icon:"🤝",
+          content:"**Cuando diferentes stakeholders tienen requisitos contradictorios, se necesita negociación. Sommerville (2011, Cap. 4.5) lo presenta como parte integral del análisis.**\n\n**Situaciones comunes:**\n• Depto. A quiere funcionalidad X; Depto. B dice que X es innecesario\n• Requisito de seguridad conflicta con uno de usabilidad\n• Los recursos no alcanzan para todos los requisitos\n\n**Proceso según Pressman (2010):**\n1. **Identificar** los stakeholders clave y sus requisitos\n2. **Detectar** conflictos entre requisitos\n3. **Discutir** con los stakeholders (talleres/JAD son ideales)\n4. **Priorizar** para decidir qué se incluye y qué se pospone\n5. **Documentar** los acuerdos y compromisos\n\n**Técnica win-win (Pressman):** Buscar soluciones donde ningún stakeholder «pierde» completamente. Un requisito se puede satisfacer parcialmente o en una fase posterior.\n\n**PARA EL EGEL:** Negociación es parte del ANÁLISIS. Si preguntan qué hacer con requisitos contradictorios → negociar y priorizar.",
+          ref:"Sommerville (2011) Cap. 4.5 · Pressman (2010) Cap. 5 · Wiegers & Beatty (2013) Cap. 3"
+        },
+      ]
     },
     {
-      id:"encuestas",
-      name:"Encuestas / Cuestionarios",
-      icon:"📋",
-      color:"#10B981",
-      definition:"Instrumento escrito con preguntas estandarizadas que se distribuye a un grupo amplio de stakeholders para recopilar información cuantitativa y cualitativa.",
-      types:[
-        {name:"Preguntas cerradas", desc:"Opciones predefinidas (sí/no, escala Likert, opción múltiple). Fáciles de analizar estadísticamente."},
-        {name:"Preguntas abiertas", desc:"Respuesta libre. Capturan opiniones detalladas pero son más difíciles de procesar."},
-        {name:"Mixtas", desc:"Combinan ambos tipos. Las más efectivas para requisitos de software."},
-      ],
-      advantages:["Escalan a muchos stakeholders simultáneamente","Resultados cuantificables y comparables","Bajo costo relativo","Anonimato favorece respuestas honestas","Fáciles de distribuir (en línea)"],
-      disadvantages:["No permiten profundizar ni aclarar respuestas","Tasa de respuesta puede ser baja","Preguntas mal diseñadas generan datos inútiles","No capturan requisitos implícitos","No hay interacción directa con el usuario"],
-      whenToUse:"Cuando tienes muchos stakeholders distribuidos geográficamente y necesitas datos cuantitativos para priorizar requisitos.",
-      egelTip:"El EGEL puede preguntar cuándo usar encuestas vs entrevistas. Clave: encuestas = muchos usuarios + datos cuantitativos. Entrevistas = pocos usuarios + profundidad.",
-      keyTerms:["Escala Likert","Tasa de respuesta","Muestra representativa","Sesgo de respuesta"],
-    },
-    {
-      id:"talleres",
-      name:"Talleres / Workshops (JAD)",
-      icon:"🏛️",
+      id:"priorizacion",
+      title:"Técnicas de Priorización",
+      subtitle:"Cómo decidir qué se hace primero",
+      icon:"📊",
       color:"#F59E0B",
-      definition:"Reuniones grupales facilitadas donde múltiples stakeholders colaboran para identificar, discutir y negociar requisitos simultáneamente. JAD = Joint Application Development.",
-      types:[
-        {name:"JAD (Joint Application Development)", desc:"Sesiones estructuradas con roles definidos: facilitador, escribano, participantes. Muy formal."},
-        {name:"Brainstorming", desc:"Generación libre de ideas sin juicio. Se evalúan después. Ideal para requisitos innovadores."},
-        {name:"Focus Group", desc:"Grupo representativo discute temas específicos. El facilitador guía la conversación."},
-      ],
-      advantages:["Múltiples perspectivas en una sola sesión","Resuelve conflictos entre stakeholders en tiempo real","Genera consenso más rápido","Fomenta la creatividad y participación colectiva"],
-      disadvantages:["Requiere un facilitador experimentado","Logística compleja (coordinar agendas)","Personalidades dominantes pueden sesgar resultados","Costoso en tiempo de los participantes"],
-      whenToUse:"Cuando hay múltiples stakeholders con visiones diferentes y necesitas llegar a consenso rápidamente.",
-      egelTip:"JAD es un término clásico del EGEL. Recuerda sus roles: facilitador, escribano (scribe), participantes. El facilitador NO da opiniones, solo guía.",
-      keyTerms:["JAD","Facilitador","Brainstorming","Consenso","Focus group"],
+      intro:"No todos los requisitos tienen la misma importancia ni urgencia. La priorización determina el orden de implementación. Hatton (2008, IEEE) presenta un análisis comparativo de métodos. Wiegers & Beatty (2013, Cap. 16) dedican un capítulo completo al tema. Usman et al. (2015) aportan la perspectiva ágil.",
+      introRef:"Hatton (2008) – IEEE · Wiegers & Beatty (2013) Cap. 16 · Usman et al. (2015) – ACM",
+      techniques:[
+        {
+          name:"MoSCoW",
+          icon:"🏷️",
+          content:"**Técnica que clasifica cada requisito en cuatro categorías. Según Hatton (2008), una de las más utilizadas en proyectos ágiles.**\n\n**Categorías:**\n• **Must have (Debe tener):** Indispensables. Sin estos el sistema NO funciona. Son el mínimo viable. Ej: «El e-commerce DEBE procesar pagos».\n• **Should have (Debería tener):** Importantes pero no críticos para el lanzamiento. Funciona sin ellos pero con limitaciones. Ej: «DEBERÍA enviar confirmaciones por email».\n• **Could have (Podría tener):** Deseables si hay tiempo. Mejoran experiencia pero no son esenciales. Ej: «PODRÍA tener chatbot de soporte».\n• **Won't have (No tendrá — esta vez):** Explícitamente excluidos de esta versión. Documentados para futuro. Ej: «NO TENDRÁ integración con redes sociales en v1».\n\n**PARA EL EGEL:** MoSCoW es la técnica más preguntada. «Won't have» NO significa «nunca», sino «no en esta versión». Must = típicamente ~60% del esfuerzo.",
+          ref:"Hatton (2008) – IEEE · Wiegers & Beatty (2013) Cap. 16"
+        },
+        {
+          name:"Valor vs. Esfuerzo",
+          icon:"📈",
+          content:"**Evalúa cada requisito en: valor para el negocio y esfuerzo de implementación. Wiegers & Beatty (2013) la describen como herramienta visual de decisión.**\n\n**Cuadrantes:**\n• **Alto valor + Bajo esfuerzo → HACER PRIMERO** (Quick wins)\n• **Alto valor + Alto esfuerzo → PLANIFICAR** (Proyectos estratégicos)\n• **Bajo valor + Bajo esfuerzo → CONSIDERAR** (Si sobra tiempo)\n• **Bajo valor + Alto esfuerzo → DESCARTAR** (No vale la pena)\n\n**Cómo se usa:**\n1. Asignar valor (1-10) con stakeholders\n2. Asignar esfuerzo (1-10) con equipo técnico\n3. Graficar cada requisito en la matriz\n4. Priorizar de arriba-izquierda a abajo-derecha\n\n**PARA EL EGEL:** Si preguntan cómo priorizar con restricción de presupuesto, esta técnica considera AMBAS dimensiones.",
+          ref:"Wiegers & Beatty (2013) Cap. 16 · Hatton (2008) – IEEE"
+        },
+        {
+          name:"Kano, Pairwise, Dot Voting, Planning Poker",
+          icon:"🎯",
+          content:"**Ranking numérico (Wiegers):** Asignar número del 1 al N. Simple pero difícil con muchos requisitos.\n\n**Dot Voting (Votación por puntos):** Cada stakeholder distribuye N puntos entre requisitos según preferencia. Rápida y democrática. Ideal en talleres JAD.\n\n**Pairwise Comparison (Hatton, 2008):** Se compara cada requisito vs todos los demás (uno a uno). Muy precisa pero impráctica con muchos requisitos — N×(N-1)/2 comparaciones.\n\n**Modelo Kano — Clasifica por impacto en satisfacción:**\n• **Básicos (must-be):** Su ausencia frustra, pero su presencia no emociona. Ej: un auto con frenos.\n• **De rendimiento (one-dimensional):** Más es mejor, relación lineal con satisfacción. Ej: velocidad de carga.\n• **De entusiasmo (delighters):** No los esperan pero si están, generan gran satisfacción. Ej: función sorpresa que ahorra tiempo.\n\n**Planning Poker (Usman et al., 2015):** Estimación ágil con cartas (secuencia Fibonacci: 1,2,3,5,8,13,21...). Cada miembro estima esfuerzo. Discuten diferencias hasta consenso. Se combina con Product Backlog priorizado por valor.",
+          ref:"Hatton (2008) – IEEE · Usman et al. (2015) – ACM · Wiegers & Beatty (2013) Cap. 16"
+        },
+      ]
     },
     {
-      id:"prototipos",
-      name:"Prototipado",
-      icon:"🖥️",
-      color:"#EF4444",
-      definition:"Construcción de una versión preliminar del sistema (o parte de él) para que los usuarios interactúen con ella y descubran o refinen requisitos.",
-      types:[
-        {name:"Baja fidelidad (Lo-Fi)", desc:"Bocetos en papel, wireframes. Rápidos y baratos. Enfocados en funcionalidad y flujo."},
-        {name:"Alta fidelidad (Hi-Fi)", desc:"Prototipo interactivo digital cercano al producto final. Simula la experiencia real."},
-        {name:"Desechable (throwaway)", desc:"Se construye solo para validar requisitos y luego se descarta. No se usa como base del sistema."},
-        {name:"Evolutivo", desc:"El prototipo evoluciona iterativamente hasta convertirse en el sistema final."},
-      ],
-      advantages:["Los usuarios entienden mejor lo que se propone al verlo","Reduce malentendidos y ambigüedades","Descubre requisitos que no surgirían solo con texto","Valida la viabilidad técnica tempranamente"],
-      disadvantages:["Riesgo de que el usuario crea que el sistema ya está 'listo'","Prototipos Hi-Fi son costosos de crear","Puede generar expectativas falsas de rendimiento","El enfoque puede desviarse a diseño visual en lugar de requisitos"],
-      whenToUse:"Cuando los requisitos son vagos o difíciles de expresar verbalmente, o cuando es un dominio nuevo para el equipo.",
-      egelTip:"Pregunta clásica: diferencia entre prototipo DESECHABLE vs EVOLUTIVO. Desechable = solo para validar, se tira. Evolutivo = se convierte en el producto.",
-      keyTerms:["Wireframe","Mockup","Lo-Fi / Hi-Fi","Prototipo desechable","Prototipo evolutivo"],
-    },
-    {
-      id:"analisis_docs",
-      name:"Análisis de Documentos",
-      icon:"📑",
-      color:"#06B6D4",
-      definition:"Revisión sistemática de documentación existente (manuales, reportes, formularios, sistemas actuales) para extraer requisitos del dominio.",
-      types:[
-        {name:"Documentos del negocio", desc:"Manuales de procedimientos, políticas, organigramas, reportes financieros."},
-        {name:"Sistema actual", desc:"Documentación técnica del sistema existente, código fuente, esquemas de BD."},
-        {name:"Normativas/regulaciones", desc:"Leyes, estándares de la industria, regulaciones que el sistema debe cumplir."},
-      ],
-      advantages:["No requiere tiempo de los stakeholders","Disponible desde el inicio del proyecto","Proporciona contexto del dominio y vocabulario","Identifica restricciones legales y regulatorias"],
-      disadvantages:["Documentación puede estar desactualizada","No captura requisitos nuevos o futuros","Puede ser muy voluminosa","No refleja prácticas reales (solo las documentadas)"],
-      whenToUse:"Al inicio del proyecto para entender el dominio, o cuando se reemplaza un sistema existente.",
-      egelTip:"Complementa otras técnicas. El EGEL puede preguntar qué técnica usar PRIMERO en un proyecto nuevo → análisis de documentos es buen candidato para la fase inicial.",
-      keyTerms:["Dominio del problema","Documentación existente","Ingeniería inversa","Restricciones regulatorias"],
+      id:"validacion",
+      title:"Técnicas de Validación",
+      subtitle:"Cómo asegurar que los requisitos son correctos",
+      icon:"✅",
+      color:"#10B981",
+      intro:"La validación verifica que los requisitos documentados reflejan la necesidad real del usuario. Sommerville (2011, Cap. 4.7) distingue: verificación (¿lo construimos correctamente?) vs validación (¿construimos lo correcto?). Un error en requisitos descubierto en producción cuesta 100x más que uno detectado aquí (Pressman, 2010).",
+      introRef:"Sommerville (2011) Cap. 4.7 · Pressman (2010) Cap. 7 · McConnell – Checklist",
+      techniques:[
+        {
+          name:"Revisiones e Inspecciones",
+          icon:"🔎",
+          content:"**Según Sommerville (2011, Cap. 4.7.1):** Proceso donde un grupo de revisores examina el documento de requisitos para detectar errores.\n\n**Qué se verifica (checklist de McConnell):**\n• **Completitud:** ¿Falta algún requisito? ¿Se cubrieron todos los escenarios?\n• **Consistencia:** ¿Hay requisitos que se contradigan?\n• **No ambigüedad:** ¿Puede un requisito interpretarse de más de una manera?\n• **Verificabilidad:** ¿Se puede probar/medir que se cumple?\n• **Trazabilidad:** ¿Cada requisito tiene un origen identificable?\n• **Factibilidad:** ¿Es técnicamente posible implementarlo?\n\n**Proceso típico:**\n1. Distribución del documento a revisores (analistas, devs, testers, usuarios)\n2. Revisión individual previa a la reunión\n3. Reunión grupal para discutir hallazgos\n4. Documentación de defectos encontrados\n5. Corrección y re-revisión\n\n**PARA EL EGEL:** Revisión = técnica de validación más importante. La checklist de McConnell es referencia directa.",
+          ref:"Sommerville (2011) Cap. 4.7 · McConnell – Checklist · Wiegers & Beatty (2013) Cap. 17"
+        },
+        {
+          name:"Prototipado como Validación",
+          icon:"🖥️",
+          content:"**El prototipado tiene DOBLE propósito (Sommerville, 2011, Cap. 2.3):**\n\n**Como obtención:** «¿Qué necesitas?» → El usuario descubre requisitos nuevos.\n**Como validación:** «¿Esto es lo que necesitas?» → El usuario confirma o rechaza que los requisitos documentados son correctos.\n\n**La diferencia está en el MOMENTO:**\n• Al inicio sin requisitos previos = ELICITACIÓN\n• Después de documentar requisitos = VALIDACIÓN\n\n**Proceso de validación con prototipo:**\n1. Construir prototipo basado en los requisitos documentados\n2. Presentar al usuario y dejarlo interactuar\n3. Registrar feedback: ¿coincide con lo esperado?\n4. Modificar requisitos según feedback\n5. Iterar hasta validar",
+          ref:"Sommerville (2011) Cap. 2.3, 4.7 · Pressman (2010) Cap. 5"
+        },
+        {
+          name:"Generación de Casos de Prueba",
+          icon:"🧪",
+          content:"**Según Sommerville (2011, Cap. 4.7.2), una forma efectiva de validar requisitos es intentar diseñar pruebas ANTES de implementar.**\n\n**Lógica:** Si no puedes escribir un caso de prueba para un requisito, entonces no es verificable y está mal escrito.\n\n**Ejemplo:**\n• Requisito: «El sistema debe ser rápido» → ¿Cómo pruebas «rápido»? No se puede. MAL ESCRITO.\n• Requisito: «El sistema debe responder consultas en menos de 2 segundos con 100 usuarios concurrentes» → Puedes medirlo. VERIFICABLE.\n\n**PARA EL EGEL:** Esto conecta con la propiedad de VERIFICABILIDAD. Un requisito que no se puede probar no es un buen requisito. La prueba de verificabilidad: ¿puedo escribir un test para esto?",
+          ref:"Sommerville (2011) Cap. 4.7.2 · Pressman (2010) Cap. 7"
+        },
+        {
+          name:"Matriz de Trazabilidad",
+          icon:"🔗",
+          content:"**Según Wiegers & Beatty (2013, Cap. 20):** Tabla que conecta cada requisito con su origen y con los artefactos derivados.\n\n**Estructura:**\nOrigen → Requisito → Caso de uso → Módulo de diseño → Caso de prueba\n\n**Propósito en validación:**\n• Verificar que CADA requisito tiene un origen justificado (no hay «requisitos huérfanos»)\n• Verificar que CADA requisito tiene al menos un caso de prueba\n• Verificar que no hay artefactos de diseño sin requisito que los justifique\n• Detectar requisitos faltantes (origen existe pero no tiene requisito)\n\n**Trazabilidad bidireccional:**\n• **Forward (hacia adelante):** De requisito → diseño → código → prueba\n• **Backward (hacia atrás):** De prueba → código → diseño → requisito\n\n**PARA EL EGEL:** Si preguntan cómo asegurar que no se olvide ningún requisito durante el desarrollo → matriz de trazabilidad.",
+          ref:"Wiegers & Beatty (2013) Cap. 20 · Wong (2017) · SWEBOK v3.0 Cap. 1.6"
+        },
+      ]
     },
   ];
 
-  const comparisons = [
-    {criteria:"Escala (# usuarios)", entrevistas:"Bajo (1-1)", observacion:"Bajo (1-pocos)", encuestas:"Alto (muchos)", talleres:"Medio (5-15)", prototipos:"Medio", docs:"N/A"},
-    {criteria:"Profundidad", entrevistas:"⬛⬛⬛ Alta", observacion:"⬛⬛⬛ Alta", encuestas:"⬛ Baja", talleres:"⬛⬛ Media-Alta", prototipos:"⬛⬛ Media", docs:"⬛⬛ Media"},
-    {criteria:"Costo", entrevistas:"Alto", observacion:"Alto", encuestas:"Bajo", talleres:"Alto", prototipos:"Variable", docs:"Bajo"},
-    {criteria:"Req. tácitos", entrevistas:"Algunos", observacion:"⭐ Excelente", encuestas:"No", talleres:"Algunos", prototipos:"Sí", docs:"No"},
-    {criteria:"Cuantitativo", entrevistas:"No", observacion:"No", encuestas:"⭐ Excelente", talleres:"No", prototipos:"No", docs:"Parcial"},
-    {criteria:"Fase ideal", entrevistas:"Inicio-Medio", observacion:"Inicio", encuestas:"Medio", talleres:"Inicio-Medio", prototipos:"Medio-Final", docs:"Inicio"},
+  const compRows = [
+    {criteria:"Escala (# stakeholders)", entrevistas:"Bajo (1-3)", observacion:"Bajo (1-5)", encuestas:"Alto (20+)", talleres:"Medio (5-15)", prototipos:"Medio (3-10)", docs:"N/A", casosUso:"Medio (2-8)"},
+    {criteria:"Profundidad", entrevistas:"Alta ⬛⬛⬛", observacion:"Alta ⬛⬛⬛", encuestas:"Baja ⬛", talleres:"Media ⬛⬛", prototipos:"Media ⬛⬛", docs:"Media ⬛⬛", casosUso:"Alta ⬛⬛⬛"},
+    {criteria:"Costo relativo", entrevistas:"Alto", observacion:"Alto", encuestas:"Bajo", talleres:"Alto", prototipos:"Variable", docs:"Bajo", casosUso:"Medio"},
+    {criteria:"Captura req. tácitos", entrevistas:"Parcial", observacion:"⭐ Excelente", encuestas:"No", talleres:"Parcial", prototipos:"Sí", docs:"No", casosUso:"Parcial"},
+    {criteria:"Datos cuantitativos", entrevistas:"No", observacion:"No", encuestas:"⭐ Excelente", talleres:"Parcial", prototipos:"No", docs:"Parcial", casosUso:"No"},
+    {criteria:"Resuelve conflictos", entrevistas:"No", observacion:"No", encuestas:"No", talleres:"⭐ Sí", prototipos:"Indirecto", docs:"No", casosUso:"Parcial"},
+    {criteria:"Fase ideal", entrevistas:"Inicio→Medio", observacion:"Inicio", encuestas:"Medio", talleres:"Inicio→Medio", prototipos:"Medio→Final", docs:"Inicio", casosUso:"Medio"},
   ];
 
   const quizQuestions = [
-    {
-      q:"¿Cuál técnica es la más adecuada para descubrir requisitos tácitos que los usuarios no pueden expresar verbalmente?",
-      options:["Encuestas","Entrevistas estructuradas","Observación","Análisis de documentos"],
-      correct:2,
-      explanation:"La observación permite descubrir requisitos tácitos porque el analista ve directamente cómo trabajan los usuarios, incluyendo workarounds y prácticas que ellos dan por sentado y no mencionarían en una entrevista."
-    },
-    {
-      q:"En una sesión JAD (Joint Application Development), ¿cuál es el rol del facilitador?",
-      options:["Tomar notas de todos los acuerdos","Dar su opinión experta sobre los requisitos","Guiar la discusión sin emitir opiniones propias","Programar el prototipo en tiempo real"],
-      correct:2,
-      explanation:"El facilitador en JAD guía la sesión, mantiene el enfoque y resuelve conflictos, pero NO emite opiniones sobre los requisitos. El que toma notas es el escribano (scribe)."
-    },
-    {
-      q:"¿Cuál es la principal ventaja de las encuestas sobre las entrevistas?",
-      options:["Mayor profundidad en las respuestas","Captura de requisitos implícitos","Escalabilidad a muchos stakeholders","Mejor rapport con los usuarios"],
-      correct:2,
-      explanation:"Las encuestas pueden distribuirse a cientos de stakeholders simultáneamente, algo imposible con entrevistas individuales. Su fortaleza es la escala y los datos cuantitativos."
-    },
-    {
-      q:"¿Qué tipo de prototipo se construye SOLO para validar requisitos y luego se descarta?",
-      options:["Evolutivo","De alta fidelidad","Desechable (throwaway)","Wireframe"],
-      correct:2,
-      explanation:"El prototipo desechable (throwaway) se crea únicamente para explorar y validar requisitos. Una vez cumplido ese objetivo, se descarta y el sistema se construye desde cero con los requisitos ya clarificados."
-    },
-    {
-      q:"El efecto Hawthorne se refiere a que:",
-      options:["Los usuarios olvidan mencionar requisitos importantes","Las personas modifican su comportamiento al saberse observadas","Los prototipos crean expectativas falsas","Las encuestas tienen baja tasa de respuesta"],
-      correct:1,
-      explanation:"El efecto Hawthorne es un fenómeno donde las personas cambian su comportamiento simplemente por saber que están siendo observadas. Es una limitación importante de la técnica de observación."
-    },
-    {
-      q:"¿Cuál tipo de entrevista es la MÁS utilizada en ingeniería de requisitos?",
-      options:["Estructurada","No estructurada","Semi-estructurada","Grupal"],
-      correct:2,
-      explanation:"La entrevista semi-estructurada es la más usada porque combina un guión base (consistencia) con la flexibilidad de explorar temas que surjan durante la conversación."
-    },
-    {
-      q:"Si tienes 200 usuarios distribuidos en 5 ciudades y necesitas priorizar funcionalidades, ¿qué técnica es más apropiada?",
-      options:["Observación etnográfica","Entrevistas individuales","Encuestas con escala Likert","Talleres JAD"],
-      correct:2,
-      explanation:"Con 200 usuarios distribuidos geográficamente, las encuestas son la mejor opción por su escalabilidad y capacidad de generar datos cuantitativos (como escalas Likert) para priorizar."
-    },
-    {
-      q:"¿Qué técnica de elicitación es más útil al INICIO de un proyecto para entender el dominio antes de hablar con los usuarios?",
-      options:["Prototipado","Brainstorming","Análisis de documentos","Encuestas"],
-      correct:2,
-      explanation:"El análisis de documentos permite entender el dominio, vocabulario y restricciones existentes antes de interactuar con los stakeholders. No requiere tiempo de los usuarios y está disponible desde el día uno."
-    },
-    {
-      q:"¿Cuál es la diferencia clave entre un prototipo de baja fidelidad y uno de alta fidelidad?",
-      options:["Baja fidelidad usa código; alta fidelidad usa papel","Baja fidelidad se enfoca en flujo/funcionalidad; alta fidelidad simula la experiencia final","Baja fidelidad es evolutivo; alta fidelidad es desechable","No hay diferencia significativa"],
-      correct:1,
-      explanation:"Los prototipos Lo-Fi (bocetos, wireframes) se enfocan en funcionalidad y flujo de navegación. Los Hi-Fi son interactivos y se acercan a la apariencia y experiencia del producto final."
-    },
-    {
-      q:"¿Qué técnica combina mejor con las entrevistas para obtener una visión completa de los requisitos?",
-      options:["Solo más entrevistas","Observación + Análisis de documentos","Solo encuestas","Solo prototipos"],
-      correct:1,
-      explanation:"La combinación de observación (captura lo tácito) + análisis de documentos (captura el contexto formal) complementa las entrevistas (captura lo explícito), cubriendo los tres tipos de conocimiento."
-    },
+    {q:"Un analista necesita descubrir cómo los empleados de almacén realmente organizan los pedidos, pero ellos dicen que «simplemente lo hacen». ¿Qué técnica es más apropiada?",opts:["Encuestas con escala Likert","Entrevistas estructuradas","Observación etnográfica","Análisis de documentos"],correct:2,exp:"Los empleados no pueden verbalizar sus procesos (conocimiento tácito). La observación etnográfica, según Sommerville (2011, Cap. 4.6), es la técnica para capturar requisitos tácitos observando a los usuarios en su contexto real.",ref:"Sommerville (2011) Cap. 4.6",cat:"obt"},
+    {q:"¿Cuál es el tipo de entrevista MÁS utilizado en ingeniería de requisitos según la bibliografía?",opts:["Estructurada","No estructurada","Semi-estructurada","Grupal"],correct:2,exp:"La semi-estructurada combina guión base (consistencia) con flexibilidad (exploración). Sommerville (2011) y Pressman (2010) la identifican como la más empleada.",ref:"Sommerville (2011) Cap. 4.5.1 · Pressman (2010) Cap. 5.3",cat:"obt"},
+    {q:"En una sesión JAD, el facilitador observa que un gerente domina la conversación y los usuarios operativos no hablan. ¿Qué debe hacer?",opts:["Dar su propia opinión para equilibrar","Intervenir y dar oportunidad a los usuarios operativos","Dejar que el gerente continúe por su jerarquía","Suspender la sesión"],correct:1,exp:"Según Wiegers & Beatty (2013, Cap. 7), el facilitador debe asegurar que todos participen. Su rol es guiar la discusión de forma neutral, NO dar opiniones propias ni permitir que una persona domine.",ref:"Wiegers & Beatty (2013) Cap. 7",cat:"obt"},
+    {q:"Una empresa necesita recopilar preferencias de 500 usuarios en 10 ciudades para priorizar funcionalidades. ¿Qué técnica es más eficiente?",opts:["Entrevistas semi-estructuradas","Talleres JAD en cada ciudad","Cuestionarios en línea con escala Likert","Observación participante"],correct:2,exp:"Con 500 usuarios distribuidos, las encuestas escalan eficientemente y Likert permite datos cuantitativos para priorizar.",ref:"Pressman (2010) Cap. 5 · Rohrer (2014)",cat:"obt"},
+    {q:"¿Qué fenómeno describe que las personas cambian su comportamiento al saberse observadas?",opts:["Sesgo de confirmación","Efecto halo","Efecto Hawthorne","Efecto placebo"],correct:2,exp:"El efecto Hawthorne es una limitación de la observación identificada por Pressman (2010). Los usuarios actúan diferente, distorsionando los requisitos capturados.",ref:"Pressman (2010) Cap. 5",cat:"obt"},
+    {q:"¿Cuál es la diferencia CLAVE entre prototipo desechable y evolutivo según Sommerville?",opts:["Desechable es Lo-Fi; evolutivo es Hi-Fi","Desechable se descarta después de validar; evolutivo se convierte en el sistema final","Desechable es más barato","No hay diferencia significativa"],correct:1,exp:"Sommerville (2011, Cap. 2.3.1): desechable (throwaway) = solo para explorar requisitos y se descarta. Evolutivo = se refina hasta convertirse en el producto final.",ref:"Sommerville (2011) Cap. 2.3.1",cat:"obt"},
+    {q:"Al inicio de un proyecto para reemplazar un sistema de nómina, ¿qué técnica usar PRIMERO?",opts:["Prototipado Hi-Fi","Encuestas a todos los empleados","Análisis de la documentación del sistema actual","Brainstorming con el equipo técnico"],correct:2,exp:"Pressman (2010) recomienda análisis de documentos como primera actividad. Entiende el dominio ANTES de hablar con usuarios, haciendo entrevistas posteriores más productivas.",ref:"Pressman (2010) Cap. 5 · Wiegers & Beatty (2013) Cap. 8",cat:"obt"},
+    {q:"Un requisito dice: «El sistema debe ser fácil de usar». ¿Qué problema tiene?",opts:["Es funcional mal clasificado","Es ambiguo y no verificable","Es duplicado","Es de negocio, no de usuario"],correct:1,exp:"«Fácil de usar» es ambiguo (¿qué significa?) y no verificable (¿cómo lo pruebas?). Según McConnell y Sommerville, un buen requisito debe poder medirse o probarse.",ref:"Sommerville (2011) Cap. 4.7 · McConnell – Checklist",cat:"ana"},
+    {q:"¿Cuál es un requisito NO funcional?",opts:["Registrar clientes nuevos","Generar reportes PDF","Soportar 1,000 usuarios concurrentes","Enviar notificaciones por email"],correct:2,exp:"Los funcionales dicen qué HACE el sistema. «Soportar 1,000 concurrentes» es restricción de RENDIMIENTO — no funcional según Sommerville (2011, Cap. 4.1).",ref:"Sommerville (2011) Cap. 4.1 · SWEBOK v3.0 Cap. 1.3",cat:"ana"},
+    {q:"Ventas quiere descuentos automáticos; Finanzas exige aprobación manual. ¿Qué actividad aplica?",opts:["Modelado conceptual","Clasificación","Negociación de requisitos","Prototipado"],correct:2,exp:"Es conflicto entre stakeholders. Pressman (2010) y Sommerville (2011) indican que la negociación busca soluciones win-win entre las partes.",ref:"Sommerville (2011) Cap. 4.5 · Pressman (2010) Cap. 5",cat:"ana"},
+    {q:"¿Para qué sirve un diagrama de contexto en el análisis?",opts:["Mostrar secuencia de pantallas","Definir LÍMITES del sistema y sus interacciones externas","Modelar la base de datos","Priorizar requisitos por valor"],correct:1,exp:"El diagrama de contexto según Pressman (2010, Cap. 6) muestra el sistema como caja negra y todas las entidades externas que interactúan. Define qué está dentro y fuera del alcance.",ref:"Pressman (2010) Cap. 6",cat:"ana"},
+    {q:"En MoSCoW, «Won't have» significa:",opts:["Requisito inútil, eliminado permanentemente","No se implementará en esta versión pero se documenta para el futuro","Opcional, se implementa si sobra tiempo","Baja prioridad pero se incluirá"],correct:1,exp:"Según Hatton (2008), «Won't have this time» = excluido de esta versión pero documentado para consideración futura. NO significa que se descarte para siempre.",ref:"Hatton (2008) – IEEE",cat:"pri"},
+    {q:"En una matriz valor vs. esfuerzo, ¿qué requisitos implementar PRIMERO?",opts:["Alto valor + Alto esfuerzo","Bajo valor + Bajo esfuerzo","Alto valor + Bajo esfuerzo","Bajo valor + Alto esfuerzo"],correct:2,exp:"Alto valor + bajo esfuerzo = «quick wins» — máximo beneficio con mínima inversión. Según Wiegers & Beatty (2013), son los primeros candidatos.",ref:"Wiegers & Beatty (2013) Cap. 16",cat:"pri"},
+    {q:"¿Qué técnica compara cada requisito contra todos los demás en pares?",opts:["MoSCoW","Dot Voting","Pairwise Comparison","Kano"],correct:2,exp:"Pairwise Comparison según Hatton (2008) evalúa cada par. Muy precisa pero costosa: N×(N-1)/2 comparaciones.",ref:"Hatton (2008) – IEEE",cat:"pri"},
+    {q:"En Kano, un requisito «básico» (must-be) se caracteriza porque:",opts:["Genera gran entusiasmo si está","Su ausencia causa insatisfacción pero su presencia no genera satisfacción extra","Relación lineal con la satisfacción","Es de baja prioridad"],correct:1,exp:"Los básicos se dan por sentado. Su ausencia frustra (auto sin frenos), pero tenerlos no genera satisfacción extra.",ref:"Wiegers & Beatty (2013) Cap. 16",cat:"pri"},
+    {q:"¿Cuál es la diferencia entre verificación y validación según Sommerville?",opts:["Verificación usa prototipos; validación usa revisiones","Verificación = ¿lo construimos correctamente?; Validación = ¿construimos lo correcto?","Son sinónimos","Verificación es para funcionales; validación para no funcionales"],correct:1,exp:"Sommerville (2011, Cap. 4.7): Verificación = ¿construimos el producto correctamente? (cumple specs). Validación = ¿construimos el producto correcto? (cumple necesidad real).",ref:"Sommerville (2011) Cap. 4.7",cat:"val"},
+    {q:"Si un requisito dice «procesar transacciones rápidamente», ¿por qué falla la validación?",opts:["Porque es funcional","Porque «rápidamente» es ambiguo y no verificable","Porque le falta el actor","Porque debería ser historia de usuario"],correct:1,exp:"No se puede escribir prueba para «rápidamente». Sommerville (2011, Cap. 4.7.2): si no puedes diseñar una prueba, no es verificable.",ref:"Sommerville (2011) Cap. 4.7.2",cat:"val"},
+    {q:"¿Qué artefacto rastrea cada requisito desde su origen hasta su caso de prueba?",opts:["Diagrama de contexto","Diagrama de actividad","Matriz de trazabilidad","Documento de visión"],correct:2,exp:"La matriz de trazabilidad según Wiegers & Beatty (2013, Cap. 20) conecta: Origen → Requisito → Caso de uso → Diseño → Prueba.",ref:"Wiegers & Beatty (2013) Cap. 20",cat:"val"},
+    {q:"Un prototipo basado en requisitos documentados se muestra al usuario y dice «esto no es lo que necesito». ¿Qué actividad es?",opts:["Obtención","Análisis","Validación","Diseño de interfaz"],correct:2,exp:"Si el prototipo se basó en requisitos ya documentados y el usuario lo rechaza, es validación — se verifica que los requisitos reflejan la necesidad real.",ref:"Sommerville (2011) Cap. 2.3, 4.7",cat:"val"},
+    {q:"¿Cuál NO es propiedad de calidad de un requisito según McConnell?",opts:["Verificable","Consistente","Implementado en Java","Completo"],correct:2,exp:"McConnell evalúa: completitud, consistencia, no ambigüedad, verificabilidad, trazabilidad, factibilidad. El lenguaje de implementación NO es propiedad del requisito.",ref:"McConnell – Checklist · Sommerville (2011) Cap. 4.7",cat:"val"},
   ];
 
+  const catLabels={obt:{name:"Obtención",color:"#3B82F6"},ana:{name:"Análisis",color:"#8B5CF6"},pri:{name:"Priorización",color:"#F59E0B"},val:{name:"Validación",color:"#10B981"}};
+
   function App(){
-    const [tab,setTab]=useState("tecnicas");
-    const [activeTech,setActiveTech]=useState("entrevistas");
-    const [quizState,setQuizState]=useState({current:0,answers:{},showResult:false,submitted:false});
+    const [tab,setTab]=useState("teoria");
+    const [activeSection,setActiveSection]=useState("obtencion");
+    const [activeTech,setActiveTech]=useState(0);
+    const [quiz,setQuiz]=useState({cur:0,ans:{},done:false});
 
-    const tech = techniques.find(t=>t.id===activeTech);
+    const sec=sections.find(s=>s.id===activeSection);
 
-    const handleAnswer=(idx)=>{
-      if(quizState.answers[quizState.current]!==undefined) return;
-      setQuizState(p=>({...p,answers:{...p.answers,[p.current]:idx}}));
+    const handleAns=(i)=>{if(quiz.ans[quiz.cur]!==undefined)return;setQuiz(p=>({...p,ans:{...p.ans,[p.cur]:i}}))};
+    const score=Object.entries(quiz.ans).filter(([k,v])=>v===quizQuestions[k].correct).length;
+    const allDone=Object.keys(quiz.ans).length===quizQuestions.length;
+
+    const fmt=(text)=>{
+      return text.split('\n').map((line,i)=>{
+        line=line.trim();
+        if(!line) return React.createElement('div',{key:i,style:{height:7}});
+        let parts=line.split(/\*\*(.*?)\*\*/g);
+        let rendered=parts.map((p,j)=>j%2===1?React.createElement('strong',{key:j,style:{color:"#E2E8F0"}},p):React.createElement('span',{key:j},p));
+        if(line.startsWith('•')||line.startsWith('—')||line.startsWith('  —'))
+          return React.createElement('div',{key:i,style:{paddingLeft:line.startsWith('  ')?28:16,fontSize:14,lineHeight:1.75,color:"#B0BEC5"}},rendered);
+        return React.createElement('div',{key:i,style:{fontSize:14,lineHeight:1.75,color:"#B0BEC5"}},rendered);
+      });
     };
-    const nextQ=()=>setQuizState(p=>({...p,current:Math.min(p.current+1,quizQuestions.length-1)}));
-    const prevQ=()=>setQuizState(p=>({...p,current:Math.max(p.current-1,0)}));
-    const resetQuiz=()=>setQuizState({current:0,answers:{},showResult:false,submitted:false});
-    const score=Object.entries(quizState.answers).filter(([k,v])=>v===quizQuestions[k].correct).length;
-    const allAnswered=Object.keys(quizState.answers).length===quizQuestions.length;
 
     return (
-      <div style={{minHeight:"100vh",background:"#0F172A",padding:"16px 12px"}}>
-        <div style={{maxWidth:880,margin:"0 auto"}}>
+      React.createElement('div',{style:{minHeight:"100vh",background:"#0B0F1A",padding:"14px 10px 40px"}},
+        React.createElement('div',{style:{maxWidth:920,margin:"0 auto"}},
 
-          {/* Header */}
-          <div style={{background:"linear-gradient(135deg,#1E293B 0%,#1E3A5F 50%,#1E293B 100%)",border:"1px solid #334155",borderRadius:16,padding:"28px 22px",marginBottom:20,position:"relative",overflow:"hidden"}}>
-            <div style={{position:"absolute",top:0,right:0,width:200,height:200,background:"radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 70%)"}}/>
-            <div style={{position:"absolute",bottom:-20,left:-20,width:150,height:150,background:"radial-gradient(circle,rgba(139,92,246,0.06) 0%,transparent 70%)"}}/>
-            <div className="mono" style={{fontSize:10,letterSpacing:3,color:"#64748B",marginBottom:6}}>EGEL PLUS · ISOFT · SUBÁREA 1.2 · JUE 12 MAR</div>
-            <h1 style={{fontSize:22,fontWeight:700,color:"#F1F5F9",lineHeight:1.3}}>Técnicas de Elicitación de Requisitos</h1>
-            <p style={{color:"#94A3B8",fontSize:13,marginTop:6,lineHeight:1.6}}>
-              Entrevistas · Observación · Encuestas · Talleres · Prototipado · Análisis documental
-            </p>
-            <div style={{display:"flex",gap:8,marginTop:14,flexWrap:"wrap"}}>
-              {[["6","Técnicas"],["10","Reactivos quiz"],["9","React. EGEL"]].map(([n,l])=>(
-                <div key={l} style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:8,padding:"5px 12px",textAlign:"center"}}>
-                  <div style={{fontSize:16,fontWeight:700,color:"#93C5FD"}}>{n}</div>
-                  <div style={{fontSize:10,color:"#64748B"}}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          // HEADER
+          React.createElement('div',{style:{background:"linear-gradient(135deg,#0F172A,#1a2744 50%,#0F172A)",border:"1px solid #1E3A5F",borderRadius:16,padding:"26px 22px",marginBottom:18,position:"relative",overflow:"hidden"}},
+            React.createElement('div',{style:{position:"absolute",top:-30,right:-30,width:180,height:180,background:"radial-gradient(circle,rgba(37,99,235,0.07),transparent 70%)"}}),
+            React.createElement('div',{className:"mono",style:{fontSize:9,letterSpacing:3,color:"#475569",marginBottom:5}},"EGEL PLUS · ISOFT · ÁREA 1 · SUBÁREA 1.2 · JUE 12 MARZO"),
+            React.createElement('h1',{style:{fontSize:20,fontWeight:700,color:"#F1F5F9",lineHeight:1.3}},"Técnicas de Obtención, Análisis, Priorización y Validación"),
+            React.createElement('p',{style:{color:"#64748B",fontSize:13,marginTop:6}},"Sesión 2 — Guía completa con referencias a la bibliografía oficial del EGEL"),
+            React.createElement('div',{style:{display:"flex",gap:7,marginTop:13,flexWrap:"wrap"}},
+              [["9","React. EGEL"],["4","Bloques"],["20","Ejercicios"],["7","Fuentes"]].map(function(a){return React.createElement('div',{key:a[1],style:{background:"rgba(37,99,235,0.08)",border:"1px solid rgba(37,99,235,0.18)",borderRadius:8,padding:"4px 11px",textAlign:"center"}},
+                React.createElement('div',{style:{fontSize:15,fontWeight:700,color:"#93C5FD"}},a[0]),
+                React.createElement('div',{style:{fontSize:9,color:"#475569"}},a[1])
+              )})
+            ),
+            React.createElement('div',{style:{marginTop:12,background:"rgba(245,158,11,0.08)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:8,padding:"8px 12px",fontSize:11,color:"#FCD34D"}},
+              "📚 Bibliografía citada: Sommerville (2011) · Pressman (2010) · Wiegers & Beatty (2013) · Wong (2017) · SWEBOK v3.0 · Hatton (2008) · McConnell · Rohrer (2014) · Usman et al. (2015)"
+            )
+          ),
 
-          {/* Tabs */}
-          <div style={{display:"flex",gap:6,marginBottom:16,flexWrap:"wrap"}}>
-            {[["tecnicas","📖 Técnicas"],["comparar","⚖️ Comparativa"],["quiz","🧪 Quiz (10)"],["resumen","📝 Resumen rápido"]].map(([k,l])=>(
-              <button key={k} onClick={()=>setTab(k)} style={{
-                padding:"9px 16px",borderRadius:9,fontSize:13,fontWeight:tab===k?700:400,
-                background:tab===k?"#3B82F6":"#1E293B",color:tab===k?"#fff":"#94A3B8",
-                border:tab===k?"none":"1px solid #334155",
-                transition:"all 0.2s"
-              }}>{l}</button>
-            ))}
-          </div>
+          // TABS
+          React.createElement('div',{style:{display:"flex",gap:5,marginBottom:14,flexWrap:"wrap"}},
+            [["teoria","📖 Teoría"],["comparar","⚖️ Comparativa"],["quiz","🧪 Quiz (20)"],["resumen","📝 Hoja de repaso"]].map(function(a){
+              return React.createElement('button',{key:a[0],onClick:function(){setTab(a[0])},style:{padding:"8px 15px",borderRadius:9,fontSize:13,fontWeight:tab===a[0]?700:400,background:tab===a[0]?"#2563EB":"#111827",color:tab===a[0]?"#fff":"#64748B",border:tab===a[0]?"none":"1px solid #1E293B"}},a[1])
+            })
+          ),
 
-          {/* TÉCNICAS TAB */}
-          {tab==="tecnicas" && (
-            <div className="fade-up">
-              <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>
-                {techniques.map(t=>(
-                  <button key={t.id} onClick={()=>setActiveTech(t.id)} style={{
-                    padding:"7px 13px",borderRadius:20,fontSize:12,
-                    background:activeTech===t.id?t.color:"#1E293B",
-                    color:activeTech===t.id?"#fff":"#94A3B8",
-                    border:`1px solid ${activeTech===t.id?t.color:"#334155"}`,
-                    transition:"all 0.2s"
-                  }}>{t.icon} {t.name}</button>
-                ))}
-              </div>
+          // TEORÍA
+          tab==="teoria" && React.createElement('div',{className:"fade-up"},
+            React.createElement('div',{style:{display:"flex",gap:5,marginBottom:12,flexWrap:"wrap"}},
+              sections.map(function(s){return React.createElement('button',{key:s.id,onClick:function(){setActiveSection(s.id);setActiveTech(0)},style:{padding:"7px 13px",borderRadius:8,fontSize:12,fontWeight:activeSection===s.id?700:400,background:activeSection===s.id?s.color+"20":"#111827",color:activeSection===s.id?s.color:"#64748B",border:"1px solid "+(activeSection===s.id?s.color+"50":"#1E293B")}},s.icon+" "+s.title.split(' ').slice(0,3).join(' '))})
+            ),
+            React.createElement('div',{style:{background:"#111827",border:"1px solid #1E293B",borderRadius:14,overflow:"hidden"}},
+              React.createElement('div',{style:{background:"linear-gradient(135deg,"+sec.color+"08,"+sec.color+"04)",borderBottom:"1px solid "+sec.color+"20",padding:"20px 22px"}},
+                React.createElement('div',{className:"mono",style:{fontSize:10,color:sec.color,fontWeight:600,letterSpacing:2,marginBottom:4}},sec.subtitle.toUpperCase()),
+                React.createElement('h2',{style:{fontSize:19,fontWeight:700,color:"#F1F5F9"}},sec.icon+" "+sec.title),
+                React.createElement('p',{style:{color:"#94A3B8",fontSize:14,marginTop:10,lineHeight:1.8}},sec.intro),
+                React.createElement('div',{className:"ref",style:{marginTop:6}},"📖 Ref: "+sec.introRef)
+              ),
+              React.createElement('div',{style:{padding:"14px 22px 0",display:"flex",gap:5,flexWrap:"wrap",borderBottom:"1px solid #1E293B",paddingBottom:12}},
+                sec.techniques.map(function(t,i){return React.createElement('button',{key:i,onClick:function(){setActiveTech(i)},style:{padding:"6px 12px",borderRadius:20,fontSize:11,background:activeTech===i?sec.color:"#0B0F1A",color:activeTech===i?"#fff":"#64748B",border:"1px solid "+(activeTech===i?sec.color:"#1E293B")}},t.icon+" "+t.name.split('/')[0].trim().substring(0,18))})
+              ),
+              React.createElement('div',{style:{padding:"20px 22px"}},
+                React.createElement('h3',{style:{fontSize:17,fontWeight:700,color:"#F1F5F9",marginBottom:14}},sec.techniques[activeTech].icon+" "+sec.techniques[activeTech].name),
+                fmt(sec.techniques[activeTech].content),
+                React.createElement('div',{className:"ref",style:{marginTop:14,padding:"10px 14px",background:"#0B0F1A",borderRadius:8,border:"1px solid #1E293B"}},"📖 Referencias: "+sec.techniques[activeTech].ref)
+              )
+            )
+          ),
 
-              <div style={{background:"#1E293B",border:"1px solid #334155",borderRadius:14,overflow:"hidden"}}>
-                <div style={{background:`linear-gradient(135deg,${tech.color}15,${tech.color}08)`,borderBottom:`1px solid ${tech.color}30`,padding:"20px 22px"}}>
-                  <div style={{fontSize:28,marginBottom:6}}>{tech.icon}</div>
-                  <h2 style={{fontSize:20,fontWeight:700,color:"#F1F5F9"}}>{tech.name}</h2>
-                  <p style={{color:"#CBD5E1",fontSize:14,marginTop:8,lineHeight:1.7}}>{tech.definition}</p>
-                </div>
+          // COMPARATIVA
+          tab==="comparar" && React.createElement('div',{className:"fade-up"},
+            React.createElement('div',{style:{background:"#111827",border:"1px solid #1E293B",borderRadius:14,overflow:"hidden"}},
+              React.createElement('div',{style:{padding:"16px 20px",borderBottom:"1px solid #1E293B"}},
+                React.createElement('h2',{style:{fontSize:17,fontWeight:700,color:"#F1F5F9"}},"⚖️ Comparativa de Técnicas de Obtención"),
+                React.createElement('p',{className:"ref",style:{marginTop:4}},"📖 Basada en Sommerville (2011) Cap. 4.5-4.6, Pressman (2010) Cap. 5, Rohrer (2014)")
+              ),
+              React.createElement('div',{style:{overflowX:"auto"}},
+                React.createElement('table',{style:{width:"100%",borderCollapse:"collapse",fontSize:12,minWidth:700}},
+                  React.createElement('thead',null,
+                    React.createElement('tr',{style:{background:"#0B0F1A"}},
+                      React.createElement('th',{style:{padding:"10px 12px",textAlign:"left",color:"#475569",fontWeight:600,fontSize:10,letterSpacing:1,borderBottom:"1px solid #1E293B"}},"Criterio"),
+                      ["🎙️Entrev.","👁️Observ.","📋Encuest.","🏛️JAD","🖥️Protot.","📑Docs","📐Casos"].map(function(h){return React.createElement('th',{key:h,style:{padding:"10px 7px",textAlign:"center",color:"#94A3B8",fontWeight:600,fontSize:10,borderBottom:"1px solid #1E293B",whiteSpace:"nowrap"}},h)})
+                    )
+                  ),
+                  React.createElement('tbody',null,
+                    compRows.map(function(row,i){return React.createElement('tr',{key:i,style:{background:i%2===0?"#111827":"#0e1420"}},
+                      React.createElement('td',{style:{padding:"9px 12px",color:"#CBD5E1",fontWeight:600,borderBottom:"1px solid #161d2e",fontSize:11}},row.criteria),
+                      ["entrevistas","observacion","encuestas","talleres","prototipos","docs","casosUso"].map(function(k){return React.createElement('td',{key:k,style:{padding:"9px 7px",textAlign:"center",color:row[k]&&row[k].indexOf("⭐")>=0?"#FCD34D":"#94A3B8",borderBottom:"1px solid #161d2e",fontSize:11}},row[k])})
+                    )})
+                  )
+                )
+              ),
+              React.createElement('div',{style:{padding:"18px 20px",borderTop:"1px solid #1E293B"}},
+                React.createElement('div',{className:"mono",style:{fontSize:10,letterSpacing:2,color:"#F59E0B",marginBottom:10,fontWeight:600}},"🎯 REGLAS DE DECISIÓN PARA EL EGEL"),
+                [
+                  {rule:"«¿Qué técnica usar primero?»",answer:"Análisis de documentos → luego entrevistas",src:"Pressman (2010)"},
+                  {rule:"«Usuarios no pueden explicar lo que hacen»",answer:"Observación etnográfica (captura tácitos)",src:"Sommerville (2011) Cap. 4.6"},
+                  {rule:"«Muchos usuarios, datos cuantitativos»",answer:"Encuestas con escalas Likert",src:"Pressman (2010)"},
+                  {rule:"«Stakeholders con requisitos contradictorios»",answer:"Talleres JAD + negociación",src:"Sommerville (2011) Cap. 4.5.2"},
+                  {rule:"«Requisitos vagos, no saben qué quieren»",answer:"Prototipado (Lo-Fi primero, Hi-Fi después)",src:"Sommerville (2011) Cap. 2.3"},
+                  {rule:"«Mejor combinación de técnicas»",answer:"Docs + Entrevistas + Observación (inicio) → Prototipos + Talleres (validación)",src:"Wiegers & Beatty (2013)"},
+                ].map(function(r,i){return React.createElement('div',{key:i,style:{background:"#0B0F1A",border:"1px solid #1E293B",borderRadius:8,padding:"10px 14px",marginBottom:7}},
+                  React.createElement('div',{style:{fontSize:13,fontWeight:700,color:"#93C5FD"}},r.rule),
+                  React.createElement('div',{style:{fontSize:13,color:"#CBD5E1",marginTop:3}},"→ "+r.answer),
+                  React.createElement('div',{className:"ref"},"📖 "+r.src)
+                )})
+              )
+            )
+          ),
 
-                <div style={{padding:"20px 22px"}}>
-                  {/* Tipos */}
-                  <div style={{marginBottom:20}}>
-                    <div className="mono" style={{fontSize:10,letterSpacing:2,color:tech.color,marginBottom:10,fontWeight:600}}>TIPOS</div>
-                    <div style={{display:"grid",gap:8}}>
-                      {tech.types.map((t,i)=>(
-                        <div key={i} style={{background:"#0F172A",border:"1px solid #334155",borderRadius:10,padding:"12px 14px",borderLeft:`3px solid ${tech.color}`}}>
-                          <div style={{fontWeight:700,fontSize:14,color:"#E2E8F0",marginBottom:3}}>{t.name}</div>
-                          <div style={{fontSize:13,color:"#94A3B8",lineHeight:1.6}}>{t.desc}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          // QUIZ
+          tab==="quiz" && React.createElement('div',{className:"fade-up"},
+            !quiz.done ?
+              React.createElement('div',{style:{background:"#111827",border:"1px solid #1E293B",borderRadius:14,overflow:"hidden"}},
+                React.createElement('div',{style:{padding:"14px 20px",borderBottom:"1px solid #1E293B",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}},
+                  React.createElement('div',null,
+                    React.createElement('h2',{style:{fontSize:16,fontWeight:700,color:"#F1F5F9"}},"🧪 Quiz Estilo EGEL — Subárea 1.2"),
+                    React.createElement('p',{style:{fontSize:11,color:"#475569",marginTop:2}},"Pregunta "+(quiz.cur+1)+" de "+quizQuestions.length+" · Referencias bibliográficas en cada explicación")
+                  ),
+                  React.createElement('div',{style:{display:"flex",gap:3,flexWrap:"wrap"}},
+                    quizQuestions.map(function(_,i){
+                      var a=quiz.ans[i];
+                      var c=a===undefined?"#1E293B":a===quizQuestions[i].correct?"#4ADE80":"#F87171";
+                      return React.createElement('div',{key:i,onClick:function(){setQuiz(function(p){return Object.assign({},p,{cur:i})})},style:{width:11,height:11,borderRadius:"50%",background:c,border:i===quiz.cur?"2px solid #93C5FD":"1px solid #334155",cursor:"pointer"}})
+                    })
+                  )
+                ),
+                React.createElement('div',{style:{padding:"20px"}},
+                  React.createElement('span',{className:"mono",style:{fontSize:10,padding:"3px 8px",borderRadius:12,background:catLabels[quizQuestions[quiz.cur].cat].color+"15",color:catLabels[quizQuestions[quiz.cur].cat].color,border:"1px solid "+catLabels[quizQuestions[quiz.cur].cat].color+"30"}},catLabels[quizQuestions[quiz.cur].cat].name.toUpperCase()),
+                  React.createElement('div',{style:{fontSize:15,fontWeight:600,color:"#E2E8F0",lineHeight:1.65,marginTop:10,marginBottom:16}},quizQuestions[quiz.cur].q),
+                  React.createElement('div',{style:{display:"grid",gap:7}},
+                    quizQuestions[quiz.cur].opts.map(function(opt,i){
+                      var answered=quiz.ans[quiz.cur]!==undefined;
+                      var isSel=quiz.ans[quiz.cur]===i;
+                      var isCor=i===quizQuestions[quiz.cur].correct;
+                      var bg="#0B0F1A",brd="#1E293B",col="#94A3B8";
+                      if(answered){if(isCor){bg="#4ADE8010";brd="#4ADE8060";col="#4ADE80";}else if(isSel){bg="#F8717110";brd="#F8717160";col="#F87171";}}
+                      return React.createElement('button',{key:i,onClick:function(){handleAns(i)},style:{background:bg,border:"1px solid "+brd,borderRadius:10,padding:"11px 15px",textAlign:"left",fontSize:14,color:col,cursor:answered?"default":"pointer"}},
+                        React.createElement('span',{style:{fontWeight:700,marginRight:8,opacity:0.5}},String.fromCharCode(65+i)+"."),opt,
+                        answered&&isCor?React.createElement('span',{style:{float:"right"}},"✓"):null,
+                        answered&&isSel&&!isCor?React.createElement('span',{style:{float:"right"}},"✗"):null
+                      )
+                    })
+                  ),
+                  quiz.ans[quiz.cur]!==undefined && React.createElement('div',{style:{marginTop:14,background:"#0c1a2e",border:"1px solid #1E3A5F",borderRadius:10,padding:"14px 16px"}},
+                    React.createElement('div',{className:"mono",style:{fontSize:10,letterSpacing:2,color:"#93C5FD",marginBottom:5,fontWeight:600}},"EXPLICACIÓN"),
+                    React.createElement('div',{style:{fontSize:13,color:"#CBD5E1",lineHeight:1.7}},quizQuestions[quiz.cur].exp),
+                    React.createElement('div',{className:"ref",style:{marginTop:6}},"📖 "+quizQuestions[quiz.cur].ref)
+                  )
+                ),
+                React.createElement('div',{style:{padding:"10px 20px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid #1E293B"}},
+                  React.createElement('button',{onClick:function(){setQuiz(function(p){return Object.assign({},p,{cur:Math.max(0,p.cur-1)})})},disabled:quiz.cur===0,style:{padding:"7px 14px",borderRadius:8,fontSize:12,background:"#0B0F1A",color:quiz.cur===0?"#1E293B":"#64748B",border:"1px solid #1E293B"}},"← Anterior"),
+                  allDone&&!quiz.done?React.createElement('button',{onClick:function(){setQuiz(function(p){return Object.assign({},p,{done:true})})},style:{padding:"8px 18px",borderRadius:8,fontSize:13,fontWeight:700,background:"#2563EB",color:"#fff"}},"Ver resultado"):null,
+                  React.createElement('button',{onClick:function(){setQuiz(function(p){return Object.assign({},p,{cur:Math.min(quizQuestions.length-1,p.cur+1)})})},disabled:quiz.cur===quizQuestions.length-1,style:{padding:"7px 14px",borderRadius:8,fontSize:12,background:"#0B0F1A",color:quiz.cur===quizQuestions.length-1?"#1E293B":"#64748B",border:"1px solid #1E293B"}},"Siguiente →")
+                )
+              )
+            :
+              React.createElement('div',{style:{background:"#111827",border:"1px solid #1E293B",borderRadius:14,padding:"26px 22px"}},
+                React.createElement('div',{style:{textAlign:"center",marginBottom:20}},
+                  React.createElement('div',{style:{fontSize:44,marginBottom:8}},score>=16?"🏆":score>=12?"👍":score>=8?"📖":"⚠️"),
+                  React.createElement('h2',{style:{fontSize:24,fontWeight:700,color:"#F1F5F9"}},score+" / "+quizQuestions.length),
+                  React.createElement('p',{style:{color:"#64748B",fontSize:14,marginTop:4}},score>=16?"¡Excelente! Dominas la subárea 1.2.":score>=12?"Buen nivel. Revisa donde fallaste.":score>=8?"Nivel intermedio. Repasa los bloques débiles.":"Necesitas más estudio. Revisa la teoría.")
+                ),
+                ["obt","ana","pri","val"].map(function(cat){
+                  var catQs=quizQuestions.map(function(q,i){return Object.assign({},q,{idx:i})}).filter(function(q){return q.cat===cat});
+                  var catScore=catQs.filter(function(q){return quiz.ans[q.idx]===q.correct}).length;
+                  return React.createElement('div',{key:cat,style:{marginBottom:12}},
+                    React.createElement('div',{style:{display:"flex",justifyContent:"space-between",marginBottom:5}},
+                      React.createElement('span',{style:{fontSize:13,fontWeight:700,color:catLabels[cat].color}},catLabels[cat].name),
+                      React.createElement('span',{style:{fontSize:13,color:catScore===catQs.length?"#4ADE80":"#F87171"}},catScore+"/"+catQs.length)
+                    ),
+                    React.createElement('div',{style:{background:"#0B0F1A",borderRadius:6,height:8,overflow:"hidden"}},
+                      React.createElement('div',{style:{width:(catScore/catQs.length)*100+"%",height:"100%",background:catLabels[cat].color,borderRadius:6}})
+                    ),
+                    catQs.filter(function(q){return quiz.ans[q.idx]!==q.correct}).map(function(q){
+                      return React.createElement('div',{key:q.idx,style:{background:"#F8717108",border:"1px solid #F8717120",borderRadius:6,padding:"7px 12px",marginTop:5,fontSize:12}},
+                        React.createElement('span',{style:{color:"#F87171"}},"❌ P"+(q.idx+1)+": "),
+                        React.createElement('span',{style:{color:"#94A3B8"}},q.q.substring(0,80)+"..."),
+                        React.createElement('div',{style:{color:"#4ADE80",marginTop:2}},"✓ "+q.opts[q.correct])
+                      )
+                    })
+                  )
+                }),
+                React.createElement('div',{style:{textAlign:"center",marginTop:16}},
+                  React.createElement('button',{onClick:function(){setQuiz({cur:0,ans:{},done:false})},style:{padding:"10px 22px",borderRadius:9,fontSize:14,fontWeight:700,background:"#2563EB",color:"#fff"}},"Reintentar quiz")
+                )
+              )
+          ),
 
-                  {/* Ventajas / Desventajas */}
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20}}>
-                    <div>
-                      <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#4ADE80",marginBottom:8,fontWeight:600}}>✓ VENTAJAS</div>
-                      {tech.advantages.map((a,i)=>(
-                        <div key={i} style={{fontSize:13,color:"#CBD5E1",padding:"5px 0",borderBottom:"1px solid #1E293B",lineHeight:1.5}}>
-                          <span style={{color:"#4ADE80",marginRight:6}}>+</span>{a}
-                        </div>
-                      ))}
-                    </div>
-                    <div>
-                      <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#F87171",marginBottom:8,fontWeight:600}}>✗ DESVENTAJAS</div>
-                      {tech.disadvantages.map((d,i)=>(
-                        <div key={i} style={{fontSize:13,color:"#CBD5E1",padding:"5px 0",borderBottom:"1px solid #1E293B",lineHeight:1.5}}>
-                          <span style={{color:"#F87171",marginRight:6}}>−</span>{d}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          // HOJA DE REPASO
+          tab==="resumen" && React.createElement('div',{className:"fade-up",style:{display:"grid",gap:12}},
+            React.createElement('div',{style:{background:"#111827",border:"1px solid #1E293B",borderRadius:14,padding:"20px"}},
+              React.createElement('h2',{style:{fontSize:17,fontWeight:700,color:"#F1F5F9",marginBottom:4}},"📝 Hoja de Repaso — Lo esencial para el EGEL"),
+              React.createElement('p',{className:"ref"},"Resumen de conceptos clave con referencia a la fuente original"),
+              React.createElement('div',{style:{marginTop:16,display:"grid",gap:10}},
+                [
+                  {label:"🔍 OBTENCIÓN",color:"#3B82F6",items:[
+                    {k:"Entrevista semi-estructurada = la más usada",v:"Guión base + flexibilidad. Permite explorar temas emergentes.",s:"Sommerville Cap. 4.5.1"},
+                    {k:"Observación → requisitos TÁCITOS",v:"ÚNICA técnica para lo que usuarios no pueden decir. Efecto Hawthorne = cambian comportamiento al ser observados.",s:"Sommerville Cap. 4.6"},
+                    {k:"Encuestas = ESCALA + CUANTITATIVO",v:"Para muchos usuarios. Likert = grado de acuerdo (1-5). NO profundizan.",s:"Pressman Cap. 5"},
+                    {k:"JAD: facilitador NO opina",v:"Roles: facilitador (neutral), escribano (notas), participantes. Facilitador guía sin dar opinión.",s:"Wiegers & Beatty Cap. 7"},
+                    {k:"Desechable vs Evolutivo",v:"Desechable = se tira tras validar. Evolutivo = se convierte en sistema final.",s:"Sommerville Cap. 2.3"},
+                    {k:"Lo-Fi vs Hi-Fi",v:"Lo-Fi = papel/wireframe/flujo. Hi-Fi = digital interactivo/experiencia final.",s:"Pressman Cap. 5"},
+                    {k:"Análisis de docs = PRIMERO",v:"Primera actividad al iniciar proyecto. Entiende dominio sin usuarios.",s:"Pressman Cap. 5"},
+                    {k:"Nunca una sola técnica",v:"Combinar: Docs + Entrevistas + Observación (inicio) → Prototipos + Talleres (validación).",s:"Wiegers & Beatty"},
+                  ]},
+                  {label:"🔬 ANÁLISIS",color:"#8B5CF6",items:[
+                    {k:"Funcional vs No funcional",v:"Funcional = qué HACE. No funcional = qué tan bien/rápido/seguro.",s:"Sommerville Cap. 4.1"},
+                    {k:"Niveles: Negocio → Usuario → Sistema",v:"Negocio = objetivos org. Usuario = lo que necesita hacer. Sistema = detalle del software.",s:"Wiegers & Beatty Cap. 1"},
+                    {k:"Negociación win-win",v:"Ante conflictos entre stakeholders: buscar que nadie pierda completamente.",s:"Pressman Cap. 5"},
+                    {k:"Diagramas de análisis",v:"Contexto = límites. Actividad = flujos. Estados = ciclo de vida. Dominio = estructura.",s:"Pressman Cap. 6"},
+                  ]},
+                  {label:"📊 PRIORIZACIÓN",color:"#F59E0B",items:[
+                    {k:"MoSCoW",v:"Must / Should / Could / Won't (no en esta versión, SÍ documentado para futuro).",s:"Hatton (2008) IEEE"},
+                    {k:"Valor vs Esfuerzo",v:"Alto valor + Bajo esfuerzo = PRIMERO (quick wins). Bajo valor + Alto esfuerzo = DESCARTAR.",s:"Wiegers & Beatty Cap. 16"},
+                    {k:"Kano: Básicos/Rendimiento/Entusiasmo",v:"Básicos = se esperan (sin ellos frustran). Rendimiento = más es mejor. Entusiasmo = sorpresas.",s:"Wiegers & Beatty Cap. 16"},
+                    {k:"Planning Poker",v:"Cartas Fibonacci. Discutir diferencias hasta consenso. Ágil.",s:"Usman et al. (2015) ACM"},
+                  ]},
+                  {label:"✅ VALIDACIÓN",color:"#10B981",items:[
+                    {k:"Verificación vs Validación",v:"Verificación = ¿lo construimos bien? Validación = ¿construimos lo correcto?",s:"Sommerville Cap. 4.7"},
+                    {k:"Criterios de calidad (McConnell)",v:"Completo, consistente, no ambiguo, verificable, trazable, factible.",s:"McConnell Checklist"},
+                    {k:"Prueba de verificabilidad",v:"Si NO puedes escribir test = mal escrito. «Rápido» ≠ verificable. «< 2 seg» = verificable.",s:"Sommerville Cap. 4.7.2"},
+                    {k:"Matriz de trazabilidad",v:"Origen → Req → Diseño → Código → Prueba. Bidireccional: forward y backward.",s:"Wiegers & Beatty Cap. 20"},
+                  ]},
+                ].map(function(section){return React.createElement('div',{key:section.label},
+                  React.createElement('div',{className:"mono",style:{fontSize:10,letterSpacing:2,color:section.color,marginBottom:8,fontWeight:600}},section.label),
+                  section.items.map(function(item,i){return React.createElement('div',{key:i,style:{background:"#0B0F1A",border:"1px solid #1E293B",borderRadius:8,padding:"10px 14px",marginBottom:5}},
+                    React.createElement('div',{style:{fontWeight:700,fontSize:13,color:section.color}},item.k),
+                    React.createElement('div',{style:{fontSize:13,color:"#94A3B8",lineHeight:1.6,marginTop:2}},item.v),
+                    React.createElement('div',{className:"ref"},"📖 "+item.s)
+                  )})
+                )})
+              )
+            ),
+            React.createElement('div',{style:{background:"#111827",border:"1px solid #F59E0B20",borderRadius:14,padding:"18px 20px"}},
+              React.createElement('div',{className:"mono",style:{fontSize:10,letterSpacing:2,color:"#F59E0B",marginBottom:10,fontWeight:600}},"📚 LECTURAS PARA HOY — ORDEN RECOMENDADO"),
+              [
+                {n:"1",name:"Wong (2017) – Cap. elicitación",url:"https://repositorio.continental.edu.pe/bitstream/20.500.12394/4281/1/DO_FIN_103_MAI_UC0939_2018.pdf",note:"PDF gratuito en español · Alineado al EGEL",time:"45 min"},
+                {n:"2",name:"Sommerville (2011) – Cap. 4.5 y 4.6",url:"#",note:"Biblioteca · Elicitación + etnografía",time:"30 min"},
+                {n:"3",name:"Pressman (2010) – Cap. 5",url:"#",note:"Biblioteca · Comunicación y obtención",time:"25 min"},
+                {n:"4",name:"Video: Ing. de Requerimientos desde cero",url:"https://www.youtube.com/watch?v=q3BYFLMCKlg",note:"YouTube gratuito · Repaso visual",time:"20 min"},
+                {n:"5",name:"McConnell – Checklist de requisitos",url:"https://www.matthewjmiller.net/files/cc2e_checklists.pdf",note:"PDF gratuito · Solo sección requisitos (2 págs)",time:"10 min"},
+              ].map(function(r,i){return React.createElement('a',{key:i,href:r.url,target:"_blank",rel:"noreferrer",style:{display:"flex",gap:12,alignItems:"center",background:"#0B0F1A",border:"1px solid #1E293B",borderRadius:8,padding:"10px 14px",marginBottom:6,textDecoration:"none"}},
+                React.createElement('div',{style:{width:28,height:28,borderRadius:"50%",background:"#F59E0B15",border:"1px solid #F59E0B30",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#FCD34D",flexShrink:0}},r.n),
+                React.createElement('div',{style:{flex:1}},
+                  React.createElement('div',{style:{color:"#93C5FD",fontWeight:600,fontSize:13}},r.name+" ↗"),
+                  React.createElement('div',{style:{fontSize:11,color:"#475569",marginTop:1}},r.note)
+                ),
+                React.createElement('div',{className:"mono",style:{fontSize:11,color:"#64748B",whiteSpace:"nowrap"}},"~"+r.time)
+              )})
+            )
+          ),
 
-                  {/* Cuándo usar */}
-                  <div style={{background:"#0F172A",border:"1px solid #334155",borderRadius:10,padding:"14px 16px",marginBottom:14}}>
-                    <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#FBBF24",marginBottom:6,fontWeight:600}}>¿CUÁNDO USAR?</div>
-                    <div style={{fontSize:14,color:"#E2E8F0",lineHeight:1.7}}>{tech.whenToUse}</div>
-                  </div>
-
-                  {/* EGEL Tip */}
-                  <div style={{background:`${tech.color}10`,border:`1px solid ${tech.color}30`,borderRadius:10,padding:"14px 16px",marginBottom:14}}>
-                    <div className="mono" style={{fontSize:10,letterSpacing:2,color:tech.color,marginBottom:6,fontWeight:600}}>🎯 TIP PARA EL EGEL</div>
-                    <div style={{fontSize:14,color:"#E2E8F0",lineHeight:1.7}}>{tech.egelTip}</div>
-                  </div>
-
-                  {/* Términos clave */}
-                  <div>
-                    <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#64748B",marginBottom:8,fontWeight:600}}>TÉRMINOS CLAVE</div>
-                    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                      {tech.keyTerms.map((t,i)=>(
-                        <span key={i} style={{background:"#0F172A",border:"1px solid #334155",borderRadius:20,padding:"4px 12px",fontSize:12,color:"#94A3B8"}}>{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* COMPARATIVA TAB */}
-          {tab==="comparar" && (
-            <div className="fade-up" style={{background:"#1E293B",border:"1px solid #334155",borderRadius:14,overflow:"hidden"}}>
-              <div style={{padding:"16px 20px",borderBottom:"1px solid #334155"}}>
-                <h2 style={{fontSize:17,fontWeight:700,color:"#F1F5F9"}}>⚖️ Tabla Comparativa de Técnicas</h2>
-                <p style={{fontSize:12,color:"#64748B",marginTop:4}}>Referencia rápida para decidir qué técnica usar según el contexto</p>
-              </div>
-              <div style={{overflowX:"auto",padding:"0 0 8px"}}>
-                <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
-                  <thead>
-                    <tr style={{background:"#0F172A"}}>
-                      <th style={{padding:"10px 14px",textAlign:"left",color:"#64748B",fontWeight:600,fontSize:11,letterSpacing:1,borderBottom:"1px solid #334155"}}>Criterio</th>
-                      {["🎙️ Entrev.","👁️ Observ.","📋 Encuest.","🏛️ Talleres","🖥️ Prototipos","📑 Docs"].map(h=>(
-                        <th key={h} style={{padding:"10px 8px",textAlign:"center",color:"#94A3B8",fontWeight:600,fontSize:11,borderBottom:"1px solid #334155",whiteSpace:"nowrap"}}>{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {comparisons.map((row,i)=>(
-                      <tr key={i} style={{background:i%2===0?"#1E293B":"#1a2536"}}>
-                        <td style={{padding:"10px 14px",color:"#E2E8F0",fontWeight:600,borderBottom:"1px solid #262f3d",fontSize:12}}>{row.criteria}</td>
-                        {["entrevistas","observacion","encuestas","talleres","prototipos","docs"].map(k=>(
-                          <td key={k} style={{padding:"10px 8px",textAlign:"center",color:"#CBD5E1",borderBottom:"1px solid #262f3d",fontSize:12}}>{row[k]}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div style={{padding:"14px 20px",borderTop:"1px solid #334155",background:"#162032"}}>
-                <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#3B82F6",marginBottom:8,fontWeight:600}}>🎯 REGLA DE ORO PARA EL EGEL</div>
-                <div style={{fontSize:13,color:"#CBD5E1",lineHeight:1.7}}>
-                  Nunca uses una sola técnica. En el examen, si preguntan la "mejor" combinación, generalmente la respuesta incluye al menos dos técnicas complementarias. La combinación más citada en la bibliografía es: <strong style={{color:"#93C5FD"}}>Entrevistas + Observación + Análisis de documentos</strong> para la fase inicial, seguido de <strong style={{color:"#93C5FD"}}>Prototipos + Talleres</strong> para validación.
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* QUIZ TAB */}
-          {tab==="quiz" && (
-            <div className="fade-up">
-              {!quizState.showResult ? (
-                <div style={{background:"#1E293B",border:"1px solid #334155",borderRadius:14,overflow:"hidden"}}>
-                  <div style={{padding:"16px 20px",borderBottom:"1px solid #334155",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <div>
-                      <h2 style={{fontSize:17,fontWeight:700,color:"#F1F5F9"}}>🧪 Quiz — Técnicas de Elicitación</h2>
-                      <p style={{fontSize:12,color:"#64748B",marginTop:3}}>Pregunta {quizState.current+1} de {quizQuestions.length}</p>
-                    </div>
-                    <div style={{display:"flex",gap:4}}>
-                      {quizQuestions.map((_,i)=>{
-                        const a=quizState.answers[i];
-                        const c=a===undefined?"#334155":a===quizQuestions[i].correct?"#4ADE80":"#F87171";
-                        return <div key={i} style={{width:10,height:10,borderRadius:"50%",background:i===quizState.current?c=="#334155"?"#3B82F6":c:c,border:i===quizState.current?"2px solid #93C5FD":"none",transition:"all 0.2s"}}/>;
-                      })}
-                    </div>
-                  </div>
-
-                  <div style={{padding:"22px 20px"}}>
-                    <div style={{fontSize:16,fontWeight:600,color:"#F1F5F9",lineHeight:1.6,marginBottom:18}}>
-                      {quizQuestions[quizState.current].q}
-                    </div>
-
-                    <div style={{display:"grid",gap:8}}>
-                      {quizQuestions[quizState.current].options.map((opt,i)=>{
-                        const answered=quizState.answers[quizState.current]!==undefined;
-                        const isSelected=quizState.answers[quizState.current]===i;
-                        const isCorrect=i===quizQuestions[quizState.current].correct;
-                        let bg="#0F172A",border="#334155",col="#CBD5E1";
-                        if(answered){
-                          if(isCorrect){bg="#4ADE8015";border="#4ADE80";col="#4ADE80";}
-                          else if(isSelected&&!isCorrect){bg="#F8717115";border="#F87171";col="#F87171";}
-                        } else if(isSelected){bg="#3B82F615";border="#3B82F6";col="#93C5FD";}
-                        return (
-                          <button key={i} onClick={()=>handleAnswer(i)} style={{
-                            background:bg,border:`1px solid ${border}`,borderRadius:10,padding:"12px 16px",
-                            textAlign:"left",fontSize:14,color:col,transition:"all 0.2s",
-                            cursor:answered?"default":"pointer"
-                          }}>
-                            <span style={{fontWeight:600,marginRight:8,opacity:0.6}}>{String.fromCharCode(65+i)}.</span>
-                            {opt}
-                            {answered&&isCorrect&&<span style={{float:"right"}}>✓</span>}
-                            {answered&&isSelected&&!isCorrect&&<span style={{float:"right"}}>✗</span>}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {quizState.answers[quizState.current]!==undefined && (
-                      <div style={{marginTop:14,background:"#162032",border:"1px solid #1E3A5F",borderRadius:10,padding:"14px 16px",animation:"fadeUp 0.3s ease-out"}}>
-                        <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#93C5FD",marginBottom:5,fontWeight:600}}>EXPLICACIÓN</div>
-                        <div style={{fontSize:13,color:"#CBD5E1",lineHeight:1.7}}>{quizQuestions[quizState.current].explanation}</div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{padding:"12px 20px 18px",display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid #334155"}}>
-                    <button onClick={prevQ} disabled={quizState.current===0} style={{padding:"8px 16px",borderRadius:8,fontSize:13,background:"#0F172A",color:quizState.current===0?"#334155":"#94A3B8",border:"1px solid #334155"}}>← Anterior</button>
-                    <div>
-                      {allAnswered && !quizState.showResult && (
-                        <button onClick={()=>setQuizState(p=>({...p,showResult:true}))} style={{padding:"8px 20px",borderRadius:8,fontSize:13,fontWeight:700,background:"#3B82F6",color:"#fff",marginRight:8}}>Ver resultado</button>
-                      )}
-                    </div>
-                    <button onClick={nextQ} disabled={quizState.current===quizQuestions.length-1} style={{padding:"8px 16px",borderRadius:8,fontSize:13,background:"#0F172A",color:quizState.current===quizQuestions.length-1?"#334155":"#94A3B8",border:"1px solid #334155"}}>Siguiente →</button>
-                  </div>
-                </div>
-              ) : (
-                <div style={{background:"#1E293B",border:"1px solid #334155",borderRadius:14,padding:"28px 22px",textAlign:"center"}}>
-                  <div style={{fontSize:48,marginBottom:10}}>{score>=8?"🏆":score>=6?"👍":"📖"}</div>
-                  <h2 style={{fontSize:22,fontWeight:700,color:"#F1F5F9"}}>{score} / {quizQuestions.length}</h2>
-                  <p style={{color:"#94A3B8",fontSize:14,marginTop:6}}>
-                    {score>=8?"¡Excelente! Dominas las técnicas de elicitación.":score>=6?"Buen nivel. Revisa las que fallaste.":"Necesitas repasar. Revisa las fichas de cada técnica."}
-                  </p>
-                  <div style={{marginTop:16,display:"grid",gap:6}}>
-                    {quizQuestions.map((q,i)=>{
-                      const correct=quizState.answers[i]===q.correct;
-                      return (
-                        <div key={i} style={{background:"#0F172A",border:`1px solid ${correct?"#4ADE8030":"#F8717130"}`,borderRadius:8,padding:"8px 14px",textAlign:"left",display:"flex",gap:8,alignItems:"center"}}>
-                          <span style={{fontSize:16}}>{correct?"✅":"❌"}</span>
-                          <span style={{fontSize:12,color:"#CBD5E1",flex:1}}>{q.q.substring(0,80)}...</span>
-                          {!correct && <span style={{fontSize:11,color:"#4ADE80",whiteSpace:"nowrap"}}>R: {q.options[q.correct].substring(0,25)}</span>}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <button onClick={resetQuiz} style={{marginTop:18,padding:"10px 24px",borderRadius:9,fontSize:14,fontWeight:700,background:"#3B82F6",color:"#fff"}}>Reintentar quiz</button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* RESUMEN TAB */}
-          {tab==="resumen" && (
-            <div className="fade-up" style={{display:"grid",gap:12}}>
-              <div style={{background:"#1E293B",border:"1px solid #334155",borderRadius:14,padding:"20px"}}>
-                <h2 style={{fontSize:17,fontWeight:700,color:"#F1F5F9",marginBottom:14}}>📝 Resumen Express — Lo que DEBES saber para el EGEL</h2>
-
-                <div style={{display:"grid",gap:12}}>
-                  {[
-                    {title:"1. Entrevista semi-estructurada = la más usada",detail:"Combina estructura (consistencia) con flexibilidad (exploración). Es el estándar en ingeniería de requisitos."},
-                    {title:"2. Observación → requisitos TÁCITOS",detail:"Es la única técnica que captura lo que los usuarios NO pueden decir. Efecto Hawthorne: cambian comportamiento al ser observados."},
-                    {title:"3. Encuestas = ESCALA + datos CUANTITATIVOS",detail:"Para muchos usuarios distribuidos. Escala Likert para medir grado de acuerdo/importancia. No profundizan."},
-                    {title:"4. JAD: facilitador NO opina",detail:"Joint Application Development. Roles: facilitador (guía), escribano (notas), participantes (stakeholders). El facilitador es neutral."},
-                    {title:"5. Prototipo desechable vs evolutivo",detail:"Desechable: solo para validar requisitos, se tira. Evolutivo: crece hasta convertirse en el sistema final."},
-                    {title:"6. Lo-Fi vs Hi-Fi",detail:"Lo-Fi: papel/wireframe, rápido, enfocado en flujo. Hi-Fi: digital interactivo, cercano al producto final, más costoso."},
-                    {title:"7. Análisis de documentos = punto de partida",detail:"Primera técnica al iniciar proyecto. Entiende dominio, vocabulario, restricciones. No necesita tiempo del usuario."},
-                    {title:"8. Nunca una sola técnica",detail:"Siempre combinar técnicas. Clásica: entrevistas + observación + docs (inicio) → prototipos + talleres (validación)."},
-                    {title:"9. Preguntas abiertas vs cerradas",detail:"Abiertas: exploración, profundidad, difícil de analizar. Cerradas: datos cuantitativos, fácil de analizar, menos ricas."},
-                    {title:"10. Brainstorming: SIN juicio",detail:"Regla fundamental: en la fase de generación no se critican ideas. La evaluación viene después. Fomenta creatividad."},
-                  ].map((item,i)=>(
-                    <div key={i} style={{background:"#0F172A",border:"1px solid #334155",borderRadius:10,padding:"13px 16px"}}>
-                      <div style={{fontWeight:700,fontSize:14,color:"#93C5FD",marginBottom:4}}>{item.title}</div>
-                      <div style={{fontSize:13,color:"#94A3B8",lineHeight:1.6}}>{item.detail}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{background:"#1E293B",border:"1px solid #F59E0B30",borderRadius:14,padding:"18px 20px"}}>
-                <div className="mono" style={{fontSize:10,letterSpacing:2,color:"#F59E0B",marginBottom:8,fontWeight:600}}>📚 LECTURAS RECOMENDADAS PARA HOY</div>
-                <div style={{display:"grid",gap:8}}>
-                  {[
-                    {name:"Wong (2017) – Cap. sobre elicitación",url:"https://repositorio.continental.edu.pe/bitstream/20.500.12394/4281/1/DO_FIN_103_MAI_UC0939_2018.pdf",note:"PDF gratuito en español · Muy alineado al EGEL"},
-                    {name:"Sommerville (9a ed.) – Cap. 4: Ingeniería de requisitos",url:"https://www.pearson.com/en-us/subject-catalog/p/software-engineering/P200000003258",note:"Buscar en biblioteca · Secciones 4.5-4.6"},
-                    {name:"Video: Ingeniería de Requerimientos desde cero",url:"https://www.youtube.com/watch?v=q3BYFLMCKlg",note:"YouTube gratuito · Técnicas explicadas en español"},
-                  ].map((r,i)=>(
-                    <a key={i} href={r.url} target="_blank" rel="noreferrer" style={{display:"block",background:"#0F172A",border:"1px solid #334155",borderRadius:8,padding:"10px 14px",color:"#93C5FD",fontWeight:600,fontSize:13,textDecoration:"none"}}>
-                      {r.name} ↗
-                      <div style={{fontWeight:400,fontSize:11,color:"#64748B",marginTop:2}}>{r.note}</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div style={{textAlign:"center",marginTop:20,fontSize:11,color:"#475569",paddingBottom:20}}>
-            EGEL Plus® ISOFT · Sesión 2 · Subárea 1.2 · Técnicas de Elicitación
-          </div>
-        </div>
-      </div>
+          React.createElement('div',{style:{textAlign:"center",marginTop:20,fontSize:10,color:"#334155",paddingBottom:16}},"EGEL Plus® ISOFT · Área 1 · Subárea 1.2 · Referencias de bibliografía oficial EGEL")
+        )
+      )
     );
   }
 
-  ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+  ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
   </script>
 </body>
 </html>
+
